@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TestCompose</string>
+    <string name="show_less">Show less</string>
+    <string name="show_more">Show more</string>
+    <string name="title_activity_layouts">LayoutsActivity</string>
+    <string name="title_activity_lista">ListaActivity</string>
+    <string name="title_activity_custom_layout">CustomLayoutActivity</string>
+    <string name="title_activity_complex">ComplexActivity</string>
+    <string name="title_activity_constraint">ConstraintActivity</string>
+    <string name="title_activity_intrisec">IntrisecActivity</string>
+</resources>
