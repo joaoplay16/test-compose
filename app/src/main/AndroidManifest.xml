@@ -45,15 +45,16 @@
             android:exported="false"
             android:label="@string/title_activity_layouts"
             android:theme="@style/Theme.TestCompose" />
+<!--        <activity-->
+<!--            android:name=".CompassActivity"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_layouts"-->
+<!--            android:theme="@style/Theme.TestCompose" />-->
         <activity
-            android:name=".NotificationActivity"
-            android:exported="false"
-            android:label="@string/title_activity_layouts"
-            android:theme="@style/Theme.TestCompose" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".CompassActivity"
             android:exported="true"
             android:theme="@style/Theme.TestCompose">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
