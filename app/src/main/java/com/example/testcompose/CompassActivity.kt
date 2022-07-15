@@ -18,15 +18,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
 import com.example.testcompose.ui.theme.TestComposeTheme
-import kotlin.math.roundToInt
 
 class CompassActivity : ComponentActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
@@ -36,7 +32,8 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
     private val rotationMatrix = FloatArray(9)
     private val mOrientationAngles = FloatArray(3)
 
-    private val mDegrees: MutableState<Int> = mutableStateOf(0)
+    private val bearing: MutableState<Int> = mutableStateOf(0)
+    private val degrees: MutableState<Float> = mutableStateOf(0f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +44,15 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    DegreesText(mDegrees.value)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center) {
+                        CompassAnimation(
+                            color = MaterialTheme.colors.onBackground,
+                            degrees = degrees.value)
+                        DegreesText(bearing.value)
+
+                    }
                 }
             }
         }
@@ -98,19 +103,18 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.size)
-//            Log.d("TYPE_ACCELEROMETER", "${Math.round(event.values[2])}")
-
         } else if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
-            //            Log.d("TYPE_MAGNETIC_FIELD", "${Math.round(event.values[0])}")
             System.arraycopy(event.values, 0, magnetometerReading, 0, magnetometerReading.size)
         }
         val azimuthInRadians = this.mOrientationAngles[0]
 
-        val azimuthInDegrees = Math.round(Math.toDegrees(azimuthInRadians.toDouble())).toInt()
-        mDegrees.value = if(azimuthInDegrees < 0 ) azimuthInDegrees + 360
-                            else azimuthInDegrees
+        val azimuthInDegrees = Math.round(Math.toDegrees(azimuthInRadians.toDouble()))
+        bearing.value = if(azimuthInDegrees < 0 ) azimuthInDegrees.toInt() + 360
+                        else azimuthInDegrees.toInt()
+        degrees.value = if(azimuthInDegrees < 0 ) - (90 + azimuthInDegrees).toFloat()
+                        else (270 - azimuthInDegrees).toFloat()
 
-        Log.d("DEGREES", "${mDegrees.value}")
+        Log.d("DEGREES", "${degrees.value }")
 
         updateOrientationAngles()
     }
@@ -144,11 +148,11 @@ fun DegreesText(degrees: Int = 0) {
 
     ) {
 
-    Text(
-        text = "${degrees}º",
-        color = MaterialTheme.colors.onBackground,
-        fontSize = TextUnit(90f,
-            type = TextUnitType.Sp))
+        Text(
+            text = "${degrees}º",
+            color = MaterialTheme.colors.onBackground,
+            fontSize = TextUnit(90f,
+                type = TextUnitType.Sp))
     }
 }
 
