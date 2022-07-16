@@ -25,44 +25,45 @@ fun CompassAnimation(
 ) {
     val canvasSize = 300.dp
 
+    val (lastRotation, setLastRotation) = remember { mutableStateOf(0) } // this keeps last rotation
+    var newRotation = lastRotation // newRotation will be updated in proper way
+    // last rotation converted to range [-359; 359]
+    val modLast = if (lastRotation > 0) lastRotation % 360 else 360 - (-lastRotation % 360)
 
-    // Sample data
-    // current angle 340 -> new angle 10 -> diff -330 -> +30
-    // current angle 20 -> new angle 350 -> diff 330 -> -30
-    // current angle 60 -> new angle 270 -> diff 210 -> -150
-    // current angle 260 -> new angle 10 -> diff -250 -> +110
+    // if modLast isn't equal rotation retrieved as function argument
+    // it means that newRotation has to be updated
+    if (modLast != bearing) {
+        // distance in degrees between modLast and rotation going backward
+        val backward = if (bearing > modLast) modLast + 360 - bearing else modLast - bearing
+        // distance in degrees between modLast and rotation going forward
+        val forward = if (bearing > modLast) bearing - modLast else 360 - modLast + bearing
 
-    val degrees = -(bearing - 270)
+        // update newRotation so it will change rotation in the shortest way
+        newRotation = if (backward < forward) {
+            // backward rotation is shorter
+            lastRotation - backward
+        } else {
+            // forward rotation is shorter (or they are equal)
+            lastRotation + forward
+        }
 
-    val storedRotation = remember { mutableStateOf(bearing) }
-
-    LaunchedEffect(degrees){
-        snapshotFlow { degrees  }
-            .collectLatest { newRotation ->
-                val diff = newRotation - storedRotation.value
-                val shortestDiff = when{
-                    diff > 180 -> diff - 360
-                    diff < -180 -> diff + 360
-                    else -> diff
-                }
-                storedRotation.value = storedRotation.value + shortestDiff
-            }
+        setLastRotation(newRotation)
     }
 
     //negative value to rotate in opsite direction
     // degrees - 270 to put the compass needle on top position
+    val degrees = -(newRotation - 270)
+
     val angle by animateFloatAsState(
-        targetValue = storedRotation.value.toFloat(),
+        targetValue = degrees.toFloat(),
         animationSpec = tween(
-            durationMillis = 300,
+            durationMillis = 400,
             easing = LinearEasing
         )
     )
-    Log.d("DEGREES", "${storedRotation.value} degrees")
-
+    Log.d("DEGREES", "${degrees} degrees")
 
     val startAngle = angle
-
 
     Box(modifier = Modifier
         .size(canvasSize)
@@ -83,30 +84,30 @@ fun CompassAnimation(
         }
     )
 
-   /* Box(modifier = Modifier
-        .size(canvasSize)
-        .clip(CircleShape)
-        .background(Color.Yellow)
-        .drawBehind {
-            val componentSize = size / 1.25f
-            val componentSize2 = componentSize / 1.2f
+    /* Box(modifier = Modifier
+         .size(canvasSize)
+         .clip(CircleShape)
+         .background(Color.Yellow)
+         .drawBehind {
+             val componentSize = size / 1.25f
+             val componentSize2 = componentSize / 1.2f
 
-            compassBorder(
-                componentSize = componentSize,
-                color = color
-            )
+             compassBorder(
+                 componentSize = componentSize,
+                 color = color
+             )
 
-            compassNeedle(
-                componentSize = componentSize2, startAngle = startAngle,
-                color = color
-            )
+             compassNeedle(
+                 componentSize = componentSize2, startAngle = startAngle,
+                 color = color
+             )
 
-        }
-        .rotate(degrees = degrees),
-        contentAlignment = Alignment.Center
-    ){
-        Text(text = "-->", fontSize = 30.sp, color= color)
-    }*/
+         }
+         .rotate(degrees = degrees),
+         contentAlignment = Alignment.Center
+     ){
+         Text(text = "-->", fontSize = 30.sp, color= color)
+     }*/
 
 }
 
