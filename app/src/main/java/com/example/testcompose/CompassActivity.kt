@@ -6,7 +6,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import com.example.testcompose.ui.theme.TestComposeTheme
+import kotlin.math.roundToInt
 
 class CompassActivity : ComponentActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
@@ -49,7 +49,8 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
                         verticalArrangement = Arrangement.Center) {
                         CompassAnimation(
                             color = MaterialTheme.colors.onBackground,
-                            degrees = degrees.value)
+                            bearing = bearing.value
+                        )
                         DegreesText(bearing.value)
 
                     }
@@ -108,13 +109,15 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
         }
         val azimuthInRadians = this.mOrientationAngles[0]
 
-        val azimuthInDegrees = Math.round(Math.toDegrees(azimuthInRadians.toDouble()))
-        bearing.value = if(azimuthInDegrees < 0 ) azimuthInDegrees.toInt() + 360
-                        else azimuthInDegrees.toInt()
-        degrees.value = if(azimuthInDegrees < 0 ) - (90 + azimuthInDegrees).toFloat()
-                        else (270 - azimuthInDegrees).toFloat()
+        val azimuthInDegrees = Math.toDegrees(azimuthInRadians.toDouble()).roundToInt()
 
-        Log.d("DEGREES", "${degrees.value }")
+        bearing.value = if(azimuthInDegrees < 0 ) azimuthInDegrees + 360
+                        else azimuthInDegrees
+
+//        degrees.value = if(azimuthInDegrees < 0 ) -(90 + azimuthInDegrees).toFloat()
+//                        else (270 - azimuthInDegrees).toFloat()
+
+//        Log.d("DEGREES", "${degrees.value }")
 
         updateOrientationAngles()
     }
