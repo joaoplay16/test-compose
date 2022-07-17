@@ -1,8 +1,9 @@
 package com.example.testcompose
 
-import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,16 +15,17 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun CompassAnimation(
+    canvasSize: Dp = 300.dp,
     color: Color = Color.Black,
-    bearing: Int = 360
+    degrees: Int = 360
 ) {
-    val canvasSize = 300.dp
 
     val (lastRotation, setLastRotation) = remember { mutableStateOf(0) } // this keeps last rotation
     var newRotation = lastRotation // newRotation will be updated in proper way
@@ -32,11 +34,11 @@ fun CompassAnimation(
 
     // if modLast isn't equal rotation retrieved as function argument
     // it means that newRotation has to be updated
-    if (modLast != bearing) {
+    if (modLast != degrees) {
         // distance in degrees between modLast and rotation going backward
-        val backward = if (bearing > modLast) modLast + 360 - bearing else modLast - bearing
+        val backward = if (degrees > modLast) modLast + 360 - degrees else modLast - degrees
         // distance in degrees between modLast and rotation going forward
-        val forward = if (bearing > modLast) bearing - modLast else 360 - modLast + bearing
+        val forward = if (degrees > modLast) degrees - modLast else 360 - modLast + degrees
 
         // update newRotation so it will change rotation in the shortest way
         newRotation = if (backward < forward) {
@@ -51,17 +53,16 @@ fun CompassAnimation(
     }
 
     //negative value to rotate in opsite direction
-    // degrees - 270 to put the compass needle on top position
-    val degrees = -(newRotation - 270)
+    // degrees - 270 to start the compass needle on top position
+    val rotation = -(newRotation - 270)
 
     val angle by animateFloatAsState(
-        targetValue = degrees.toFloat(),
+        targetValue = rotation.toFloat(),
         animationSpec = tween(
-            durationMillis = 400,
+            durationMillis = 300,
             easing = LinearEasing
         )
     )
-    Log.d("DEGREES", "${degrees} degrees")
 
     val startAngle = angle
 
@@ -69,7 +70,7 @@ fun CompassAnimation(
         .size(canvasSize)
         .drawBehind {
             val componentSize = size / 1.25f
-            val componentSize2 = componentSize / 1.2f
+            val componentSize2 = componentSize / 1.230f
 
             compassBorder(
                 componentSize = componentSize,
@@ -81,8 +82,15 @@ fun CompassAnimation(
                 color = color
             )
 
-        }
-    )
+        },
+        contentAlignment = Alignment.Center
+    ){
+        Text(
+            text = "${degrees}º",
+            color = MaterialTheme.colors.onBackground,
+            fontSize = (canvasSize.value * .2f).toInt().sp
+        )
+    }
 
     /* Box(modifier = Modifier
          .size(canvasSize)
@@ -108,7 +116,6 @@ fun CompassAnimation(
      ){
          Text(text = "-->", fontSize = 30.sp, color= color)
      }*/
-
 }
 
 fun DrawScope.compassNeedle(
@@ -120,10 +127,10 @@ fun DrawScope.compassNeedle(
         size = componentSize,
         color = color,
         startAngle = startAngle,
-        sweepAngle = 1f, //abertura do angulo
+        sweepAngle = size.width * 0.0001f, //abertura do angulo
         useCenter = false,
         style = Stroke(
-            width = 47f,
+            width = size.width * 0.06f,
             cap = StrokeCap.Round
         ),
 
@@ -147,7 +154,7 @@ fun DrawScope.compassBorder(
         sweepAngle = 360f, //abertura do angulo
         useCenter = false,
         style = Stroke(
-            width = 30f,
+            width = size.width * 0.04f,
             cap = StrokeCap.Round
         ),
 
@@ -171,7 +178,7 @@ fun CompassAnimationPreview() {
 
         ) {
 
-            CompassAnimation(bearing = 90)
+            CompassAnimation(degrees = 90)
         }
     }
 }

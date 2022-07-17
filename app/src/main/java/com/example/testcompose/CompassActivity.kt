@@ -13,14 +13,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.ExperimentalUnitApi
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import com.example.testcompose.ui.theme.TestComposeTheme
 import kotlin.math.roundToInt
 
@@ -32,8 +27,7 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
     private val rotationMatrix = FloatArray(9)
     private val mOrientationAngles = FloatArray(3)
 
-    private val bearing: MutableState<Int> = mutableStateOf(0)
-    private val degrees: MutableState<Float> = mutableStateOf(0f)
+    private val degrees: MutableState<Int> = mutableStateOf(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +43,8 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
                         verticalArrangement = Arrangement.Center) {
                         CompassAnimation(
                             color = MaterialTheme.colors.onBackground,
-                            bearing = bearing.value
+                            degrees = degrees.value
                         )
-                        DegreesText(bearing.value)
 
                     }
                 }
@@ -78,16 +71,16 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
             sensorManager.registerListener(
                 this,
                 accelerometer,
-                SensorManager.SENSOR_DELAY_NORMAL,
-                SensorManager.SENSOR_DELAY_UI
+                SensorManager.SENSOR_DELAY_FASTEST,
+                SensorManager.SENSOR_DELAY_FASTEST
             )
         }
         sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)?.also { magneticField ->
             sensorManager.registerListener(
                 this,
                 magneticField,
-                SensorManager.SENSOR_DELAY_NORMAL,
-                SensorManager.SENSOR_DELAY_UI
+                SensorManager.SENSOR_DELAY_FASTEST,
+                SensorManager.SENSOR_DELAY_FASTEST
             )
         }
     }
@@ -111,7 +104,7 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
 
         val azimuthInDegrees = Math.toDegrees(azimuthInRadians.toDouble()).roundToInt()
 
-        bearing.value = if(azimuthInDegrees < 0 ) azimuthInDegrees + 360
+        degrees.value = if(azimuthInDegrees < 0 ) azimuthInDegrees + 360
                         else azimuthInDegrees
 
 //        degrees.value = if(azimuthInDegrees < 0 ) -(90 + azimuthInDegrees).toFloat()
@@ -141,28 +134,3 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
     }
 }
 
-
-@OptIn(ExperimentalUnitApi::class)
-@Composable
-fun DegreesText(degrees: Int = 0) {
-    Column(Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-
-    ) {
-
-        Text(
-            text = "${degrees}º",
-            color = MaterialTheme.colors.onBackground,
-            fontSize = TextUnit(90f,
-                type = TextUnitType.Sp))
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CompassPreview() {
-    TestComposeTheme() {
-        DegreesText(45)
-    }
-}
