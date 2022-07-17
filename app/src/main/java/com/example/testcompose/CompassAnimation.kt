@@ -66,30 +66,50 @@ fun CompassAnimation(
 
     val startAngle = angle
 
-    Box(modifier = Modifier
-        .size(canvasSize)
-        .drawBehind {
-            val componentSize = size / 1.25f
-            val componentSize2 = componentSize / 1.230f
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-            compassBorder(
-                componentSize = componentSize,
-                color = color
-            )
+        val direction =
+            if(degrees in 338 .. 360 || degrees in 0 .. 22) "N"
+            else if (degrees in 23 .. 67) "NE"
+            else if (degrees in 68 .. 112) "L"
+            else if (degrees in 113 .. 157) "SE"
+            else if (degrees in 158 .. 202) "S"
+            else if (degrees in 203 .. 247) "SO"
+            else if (degrees in 248 .. 292) "O"
+            else if (degrees in 293 .. 337) "NO"
+            else ""
 
-            compassNeedle(
-                componentSize = componentSize2, startAngle = startAngle,
-                color = color
-            )
-
-        },
-        contentAlignment = Alignment.Center
-    ){
         Text(
-            text = "${degrees}º",
+            text = direction,
             color = MaterialTheme.colors.onBackground,
-            fontSize = (canvasSize.value * .2f).toInt().sp
+            fontSize = (canvasSize.value * .1f).toInt().sp
         )
+
+        Box(modifier = Modifier
+            .size(canvasSize)
+            .drawBehind {
+                val componentSize = size / 1.25f
+                val componentSize2 = componentSize / 1.230f
+
+                compassBorder(
+                    componentSize = componentSize,
+                    color = color
+                )
+
+                compassNeedle(
+                    componentSize = componentSize2, startAngle = startAngle,
+                    color = color
+                )
+
+            },
+            contentAlignment = Alignment.Center
+        ){
+            Text(
+                text = "${degrees}º",
+                color = MaterialTheme.colors.onBackground,
+                fontSize = (canvasSize.value * .2f).toInt().sp
+            )
+        }
     }
 
     /* Box(modifier = Modifier
