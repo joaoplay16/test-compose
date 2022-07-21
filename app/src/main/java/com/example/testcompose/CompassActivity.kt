@@ -41,11 +41,15 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center) {
+
                         CompassAnimation(
                             color = MaterialTheme.colors.onBackground,
                             degrees = degrees.value
                         )
-
+                        CompassAnimationStyled(
+                            color = MaterialTheme.colors.onBackground,
+                            degrees = degrees.value
+                        )
                     }
                 }
             }
@@ -71,16 +75,16 @@ class CompassActivity : ComponentActivity(), SensorEventListener {
             sensorManager.registerListener(
                 this,
                 accelerometer,
-                SensorManager.SENSOR_DELAY_FASTEST,
-                SensorManager.SENSOR_DELAY_FASTEST
+                SensorManager.SENSOR_DELAY_GAME,
+                SensorManager.SENSOR_DELAY_GAME
             )
         }
         sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)?.also { magneticField ->
             sensorManager.registerListener(
                 this,
                 magneticField,
-                SensorManager.SENSOR_DELAY_FASTEST,
-                SensorManager.SENSOR_DELAY_FASTEST
+                SensorManager.SENSOR_DELAY_GAME,
+                SensorManager.SENSOR_DELAY_GAME
             )
         }
     }
