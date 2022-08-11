@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+
         android:theme="@style/Theme.TestCompose">
         <activity
             android:name=".CompassActivity"
@@ -57,6 +58,7 @@
         <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
             android:name=".AdMobActivity"
+            android:screenOrientation="sensor"
             android:exported="true"
             android:theme="@style/Theme.TestCompose">
             <intent-filter>
