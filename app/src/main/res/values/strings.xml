@@ -8,4 +8,5 @@
     <string name="title_activity_complex">ComplexActivity</string>
     <string name="title_activity_constraint">ConstraintActivity</string>
     <string name="title_activity_intrisec">IntrisecActivity</string>
+    <string name="title_activity_ad_mob">AdMobActivity</string>
 </resources>
