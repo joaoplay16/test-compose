@@ -38,7 +38,7 @@ class AdMobActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Column (
-                        modifier = Modifier.scrollable(
+                        modifier = Modifier.fillMaxSize().scrollable(
                             rememberScrollState(), orientation = Orientation.Vertical)
                     ){
                         Text(text = "BANNER")

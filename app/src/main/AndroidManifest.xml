@@ -51,13 +51,19 @@
             android:name=".DialogActivity"
             android:exported="false"
             android:label="@string/title_activity_layouts"
-            android:theme="@style/Theme.TestCompose" /> <!-- <activity -->
+            android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".AdMobActivity"
+            android:exported="false"
+            android:label="@string/title_activity_layouts"
+            android:theme="@style/Theme.TestCompose" />
+        <!-- <activity -->
         <!-- android:name=".CompassActivity" -->
         <!-- android:exported="false" -->
         <!-- android:label="@string/title_activity_layouts" -->
         <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
-            android:name=".AdMobActivity"
+            android:name=".InterstitialAdActivity"
             android:screenOrientation="sensor"
             android:exported="true"
             android:theme="@style/Theme.TestCompose">
