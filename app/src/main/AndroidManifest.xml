@@ -57,13 +57,18 @@
             android:exported="false"
             android:label="@string/title_activity_layouts"
             android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".InterstitialAdActivity"
+            android:exported="false"
+            android:label="@string/title_activity_layouts"
+            android:theme="@style/Theme.TestCompose" />
         <!-- <activity -->
         <!-- android:name=".CompassActivity" -->
         <!-- android:exported="false" -->
         <!-- android:label="@string/title_activity_layouts" -->
         <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
-            android:name=".InterstitialAdActivity"
+            android:name=".RewardAdActivity"
             android:screenOrientation="sensor"
             android:exported="true"
             android:theme="@style/Theme.TestCompose">
