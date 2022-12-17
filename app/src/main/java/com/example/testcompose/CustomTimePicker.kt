@@ -1,65 +1,94 @@
 package com.example.testcompose
 
-import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CustomTimePicker(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.size(width = 250.dp, height = 200.dp),
+        modifier = modifier.size(width = 350.dp, height = 200.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
 
-        val scrollState = rememberScrollState()
+        val hourListState = rememberLazyListState()
+        val hourFlingBehavior = rememberSnapFlingBehavior(hourListState)
+        val minuteListState = rememberLazyListState()
+        val minuteFlingBehavior = rememberSnapFlingBehavior(minuteListState)
+        val secondListState = rememberLazyListState()
+        val secondFlingBehavior = rememberSnapFlingBehavior(secondListState)
 
-        var hourScrollPosition by remember { mutableStateOf(0f) }
-
-//        Log.d("SCROLL", "${hourScrollPosition}")
-
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .verticalScroll(scrollState)
-
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp),
+            state = hourListState,
+            flingBehavior = hourFlingBehavior
         ) {
-            (0 .. 24).forEach{ hour ->
-                Text(
-                    modifier = Modifier .onGloballyPositioned { cordinates ->
-                        Log.d("SCROLL", "${cordinates.positionInParent().y}")
-
-                    },
-                    text = "$hour"
-                )
+           items(24) { hour ->
+               Box(
+                   modifier = Modifier
+                       .height(68.dp)
+                       .width(70.dp)
+                       .padding(8.dp)
+                       .background(Color.Gray),
+                   contentAlignment = Alignment.Center
+               ) {
+                   Text(hour.toString(), fontSize = 32.sp)
+               }
             }
         }
-        Column(modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp)
+        LazyColumn(
+            modifier = Modifier
+                .padding(horizontal = 20.dp),
+            state = minuteListState,
+            flingBehavior = minuteFlingBehavior
         ) {
-            (0 .. 59).forEach{ hour ->
-                Text(text = "$hour")
+            items(60) { minute ->
+                Box(
+                    modifier = Modifier
+                        .height(60.dp)
+                        .width(70.dp)
+                        .padding(8.dp)
+                        .background(Color.Gray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(minute.toString(), fontSize = 32.sp)
+                }
             }
         }
-        Column(modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp)
+        LazyColumn(
+            modifier = Modifier
+                .padding(horizontal = 20.dp),
+            state = secondListState,
+            flingBehavior = secondFlingBehavior
         ) {
-            (0 .. 59).forEach{ hour ->
-                Text(text = "$hour")
+            items(60) { second ->
+                Box(
+                    modifier = Modifier
+                        .height(60.dp)
+                        .width(70.dp)
+                        .padding(8.dp)
+                        .background(Color.Gray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(second.toString(), fontSize = 32.sp)
+                }
             }
         }
     }
