@@ -18,7 +18,7 @@ import com.example.testcompose.ui.theme.TestComposeTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CustomTimePicker(
+fun WheelTimePicker(
     modifier: Modifier = Modifier,
     startIndex: Int = 0,
     count: Int,
@@ -81,7 +81,7 @@ fun PreviewCustomTimePicker(){
             Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            CustomTimePicker(
+            WheelTimePicker(
                 count = 24,
                 startIndex = 13,
                 onScrollFinished = {
@@ -91,7 +91,7 @@ fun PreviewCustomTimePicker(){
                 Text(text = "$index")
             }
 
-            CustomTimePicker(
+            WheelTimePicker(
                 count = 60,
                 startIndex = 30,
                 onScrollFinished = {
@@ -100,7 +100,7 @@ fun PreviewCustomTimePicker(){
             ) { index ->
                 Text(text = "$index")
             }
-            CustomTimePicker(
+            WheelTimePicker(
                 count = 60,
                 startIndex = 44,
                 onScrollFinished = {
