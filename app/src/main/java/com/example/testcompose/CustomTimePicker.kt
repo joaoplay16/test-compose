@@ -1,11 +1,12 @@
 package com.example.testcompose
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -17,14 +18,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CustomTimePicker(
     modifier: Modifier = Modifier,
+    startIndex: Int = 0,
+    count: Int,
     size: DpSize = DpSize(128.dp, 128.dp),
+    onScrollFinished: (index: Int) -> Int,
+    content: @Composable (index: Int) -> Unit
 ) {
     Row(
         modifier = modifier.size(width = 350.dp, height = 200.dp),
@@ -32,12 +36,20 @@ fun CustomTimePicker(
         horizontalArrangement = Arrangement.Center
     ) {
 
-        val hourListState = rememberLazyListState(0)
-        val hourFlingBehavior = rememberSnapFlingBehavior(hourListState)
-        val minuteListState = rememberLazyListState()
-        val minuteFlingBehavior = rememberSnapFlingBehavior(minuteListState)
-        val secondListState = rememberLazyListState()
-        val secondFlingBehavior = rememberSnapFlingBehavior(secondListState)
+        val listState = rememberLazyListState(0)
+        val flingBehavior = rememberSnapFlingBehavior(listState)
+
+        val isScrollInProgress = listState.isScrollInProgress
+
+        LaunchedEffect(key1 = startIndex){
+            listState.scrollToItem(index = startIndex)
+        }
+
+        LaunchedEffect(isScrollInProgress) {
+            if(!isScrollInProgress) {
+                onScrollFinished(  calculateSnappedItemIndex(listState))
+            }
+        }
 
         Box(
             modifier = modifier,
@@ -54,13 +66,11 @@ fun CustomTimePicker(
                 modifier = Modifier
                     .height(size.height)
                     .width(size.width),
-                state = hourListState,
+                state = listState,
                 contentPadding = PaddingValues(vertical = size.height / 3),
-                flingBehavior = hourFlingBehavior
+                flingBehavior = flingBehavior
             ) {
-
-
-                items(24) { hour ->
+                items(count) { index ->
                     Box(
                         modifier = Modifier
                             .size(size.width, size.height / 3)
@@ -68,57 +78,38 @@ fun CustomTimePicker(
                         contentAlignment = Alignment.Center
                     ) {
 
-                        Text(hour.toString(), fontSize = 22.sp)
+                        content(index)
                     }
-                }
-            }
-        }
-
-        LazyColumn(
-            modifier = Modifier
-                .padding(horizontal = 20.dp),
-            state = minuteListState,
-            flingBehavior = minuteFlingBehavior
-        ) {
-            items(60) { minute ->
-                Box(
-                    modifier = Modifier
-                        .height(60.dp)
-                        .width(70.dp)
-                        .padding(8.dp)
-                        .background(Color.Gray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(minute.toString(), fontSize = 32.sp)
-                }
-            }
-        }
-        LazyColumn(
-            modifier = Modifier
-                .padding(horizontal = 20.dp),
-            state = secondListState,
-            flingBehavior = secondFlingBehavior
-        ) {
-            items(60) { second ->
-                Box(
-                    modifier = Modifier
-                        .height(60.dp)
-                        .width(70.dp)
-                        .padding(8.dp)
-                        .background(Color.Gray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(second.toString(), fontSize = 32.sp)
                 }
             }
         }
     }
 }
 
+private fun calculateSnappedItemIndex(lazyListState: LazyListState): Int {
+
+    var currentIndex = lazyListState.firstVisibleItemIndex
+    val firstVisibleItemScrollOffset = lazyListState.firstVisibleItemScrollOffset
+
+    if(firstVisibleItemScrollOffset != 0){
+        currentIndex ++
+    }
+
+    return currentIndex
+}
+
 @Composable
 @Preview(showBackground = true)
 fun PreviewCustomTimePicker(){
     TestComposeTheme {
-            CustomTimePicker()
+            CustomTimePicker(
+                count = 24,
+                startIndex = 10,
+                onScrollFinished = {
+                    Log.d("FLING", "selected index $it")
+                }
+            ){ index ->
+                Text(text = "$index")
+            }
     }
 }
