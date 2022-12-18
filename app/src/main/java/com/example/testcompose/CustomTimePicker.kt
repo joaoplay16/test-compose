@@ -1,20 +1,16 @@
 package com.example.testcompose
 
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -30,54 +26,39 @@ fun CustomTimePicker(
     onScrollFinished: (index: Int) -> Int,
     content: @Composable (index: Int) -> Unit
 ) {
-        val listState = rememberLazyListState(0)
-        val flingBehavior = rememberSnapFlingBehavior(listState)
+    val listState = rememberLazyListState(0)
+    val flingBehavior = rememberSnapFlingBehavior(listState)
+    val isScrollInProgress = listState.isScrollInProgress
 
-        val isScrollInProgress = listState.isScrollInProgress
+    LaunchedEffect(key1 = startIndex){
+        listState.scrollToItem(index = startIndex)
+    }
 
-        LaunchedEffect(key1 = startIndex){
-            listState.scrollToItem(index = startIndex)
+    LaunchedEffect(isScrollInProgress) {
+        if(!isScrollInProgress) {
+            onScrollFinished(  calculateSnappedItemIndex(listState))
         }
+    }
 
-        LaunchedEffect(isScrollInProgress) {
-            if(!isScrollInProgress) {
-                onScrollFinished(  calculateSnappedItemIndex(listState))
-            }
-        }
-
-        Box(
-            modifier = modifier,
-            contentAlignment = Alignment.Center
-        ){
-            Surface(
+    LazyColumn(
+        modifier = modifier
+            .height(size.height)
+            .width(size.width /2),
+        state = listState,
+        contentPadding = PaddingValues(vertical = size.height / 3),
+        flingBehavior = flingBehavior
+    ) {
+        items(count) { index ->
+            Box(
                 modifier = Modifier
                     .size(size.width, size.height / 3),
-                shape = RoundedCornerShape(10.dp),
-                color = Color.Green.copy(0.3f),
-                border = BorderStroke(1.dp, Color.Black)
-            ) {}
-            LazyColumn(
-                modifier = Modifier
-                    .height(size.height)
-                    .width(size.width),
-                state = listState,
-                contentPadding = PaddingValues(vertical = size.height / 3),
-                flingBehavior = flingBehavior
+                contentAlignment = Alignment.Center
             ) {
-                items(count) { index ->
-                    Box(
-                        modifier = Modifier
-                            .size(size.width, size.height / 3)
-                            ,
-                        contentAlignment = Alignment.Center
-                    ) {
 
-                        content(index)
-                    }
-                }
+                content(index)
             }
         }
-
+    }
 }
 
 private fun calculateSnappedItemIndex(lazyListState: LazyListState): Int {
