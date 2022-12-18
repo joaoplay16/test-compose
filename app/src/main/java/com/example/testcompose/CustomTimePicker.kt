@@ -30,12 +30,6 @@ fun CustomTimePicker(
     onScrollFinished: (index: Int) -> Int,
     content: @Composable (index: Int) -> Unit
 ) {
-    Row(
-        modifier = modifier.size(width = 350.dp, height = 200.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-
         val listState = rememberLazyListState(0)
         val flingBehavior = rememberSnapFlingBehavior(listState)
 
@@ -83,7 +77,6 @@ fun CustomTimePicker(
                 }
             }
         }
-    }
 }
 
 private fun calculateSnappedItemIndex(lazyListState: LazyListState): Int {
