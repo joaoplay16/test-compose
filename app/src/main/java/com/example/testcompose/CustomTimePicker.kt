@@ -77,6 +77,7 @@ fun CustomTimePicker(
                 }
             }
         }
+
 }
 
 private fun calculateSnappedItemIndex(lazyListState: LazyListState): Int {
@@ -95,14 +96,38 @@ private fun calculateSnappedItemIndex(lazyListState: LazyListState): Int {
 @Preview(showBackground = true)
 fun PreviewCustomTimePicker(){
     TestComposeTheme {
+        Row(
+            Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+        ) {
             CustomTimePicker(
                 count = 24,
-                startIndex = 10,
+                startIndex = 13,
                 onScrollFinished = {
                     Log.d("FLING", "selected index $it")
                 }
-            ){ index ->
+            ) { index ->
                 Text(text = "$index")
             }
+
+            CustomTimePicker(
+                count = 60,
+                startIndex = 30,
+                onScrollFinished = {
+                    Log.d("FLING", "selected index $it")
+                }
+            ) { index ->
+                Text(text = "$index")
+            }
+            CustomTimePicker(
+                count = 60,
+                startIndex = 44,
+                onScrollFinished = {
+                    Log.d("FLING", "selected index $it")
+                }
+            ) { index ->
+                Text(text = "$index")
+            }
+        }
     }
 }
