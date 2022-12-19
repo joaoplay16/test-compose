@@ -23,7 +23,7 @@ fun WheelTimePicker(
     startIndex: Int = 0,
     count: Int,
     size: DpSize = DpSize(128.dp, 128.dp),
-    onScrollFinished: (index: Int) -> Int,
+    onScrollFinished: (index: Int) -> Unit,
     content: @Composable (index: Int) -> Unit
 ) {
     val listState = rememberLazyListState(0)
@@ -82,27 +82,8 @@ fun PreviewCustomTimePicker(){
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             WheelTimePicker(
-                count = 24,
-                startIndex = 13,
-                onScrollFinished = {
-                    Log.d("FLING", "selected index $it")
-                }
-            ) { index ->
-                Text(text = "$index")
-            }
-
-            WheelTimePicker(
                 count = 60,
-                startIndex = 30,
-                onScrollFinished = {
-                    Log.d("FLING", "selected index $it")
-                }
-            ) { index ->
-                Text(text = "$index")
-            }
-            WheelTimePicker(
-                count = 60,
-                startIndex = 44,
+                startIndex = 59,
                 onScrollFinished = {
                     Log.d("FLING", "selected index $it")
                 }
