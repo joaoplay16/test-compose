@@ -1,6 +1,5 @@
 package com.example.testcompose
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,23 +13,24 @@ import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
 import kotlin.concurrent.timer
 
+
 @Composable
 fun CountDownTimer(
     modifier: Modifier = Modifier,
-    timeInMillis: Long = 10_000L,
+    timeInMillis: Long = 5_000L,
     period: Long = 1_000L
 ) {
 
     var count by remember{ mutableStateOf(timeInMillis / period ) }
 
-    timer("timer", true, 0, period) {
-        count--
-        if (count < 0) {
-            cancel()
+    LaunchedEffect(key1 = null, block = {
+        timer("timer", false, 0, period) {
+            count--
+            if (count <= 0) {
+                this.cancel()
+            }
         }
-    }
-
-    Log.d("TIMER", "$count")
+    })
 
     Column(
         modifier = modifier,
