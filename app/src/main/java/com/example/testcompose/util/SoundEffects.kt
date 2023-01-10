@@ -4,12 +4,8 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 fun playSound(context: Context, resId: Int){
-    CoroutineScope(Dispatchers.IO).launch {
         val mp = MediaPlayer()
 
         try{
@@ -25,6 +21,5 @@ fun playSound(context: Context, resId: Int){
             mp.start()
         }catch (e: Exception){
             e.printStackTrace()
-        }
     }
 }
