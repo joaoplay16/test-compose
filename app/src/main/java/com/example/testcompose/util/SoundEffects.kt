@@ -19,6 +19,11 @@ fun playSound(context: Context, resId: Int){
             }
             mp.prepare()
             mp.start()
+
+            mp.setOnCompletionListener {
+                it.reset()
+                it.release()
+            }
         }catch (e: Exception){
             e.printStackTrace()
     }
