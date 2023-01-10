@@ -9,9 +9,9 @@ class CoroutineTimer(
 ) {
 
     private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Main + job)
+    private val scope = CoroutineScope(Dispatchers.IO + job)
 
-    private fun startCoroutineTimer() = scope.launch(Dispatchers.Main) {
+    private fun startCoroutineTimer() = scope.launch(Dispatchers.IO) {
         delay(delayMillis)
         if (repeatMillis > 0) {
             while (true) {
