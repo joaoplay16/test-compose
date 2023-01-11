@@ -7,10 +7,12 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -47,19 +49,23 @@ class NotificationActivity : ComponentActivity() {
 
 
     @Composable
-    fun SimpleNotification() {
+    fun SimpleNotification(
+        modifier: Modifier = Modifier
+    ) {
         val builder = NotificationCompat.Builder(this, "0")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Opa eai?")
             .setContentText("Vamo nessa?")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-        Button(onClick = {
-
-            with(NotificationManagerCompat.from(this)){
-                notify(1, builder.build())
+        Button(
+            modifier = modifier,
+            onClick = {
+                with(NotificationManagerCompat.from(this)){
+                    notify(1, builder.build())
+                }
             }
-        }) {
+        ) {
             Text(text = "Mostrar")
         }
     }
@@ -70,8 +76,8 @@ class NotificationActivity : ComponentActivity() {
     @Composable()
     fun PreviewSimpleNotification() {
         TestComposeTheme {
-            Scaffold() {
-                SimpleNotification()
+            Scaffold() { contentPadding ->
+                SimpleNotification(Modifier.padding(contentPadding))
             }
         }
     }
