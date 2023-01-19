@@ -26,11 +26,17 @@ class TimerViewModel : ViewModel() {
                     override fun run() {
                         _timerValue.value--
                         action()
-                        if (timerValue.value == 0L) this.cancel()
+                        if (hasFinished()) {
+                            this.cancel()
+                        }
                     }
                 }, 0L, 1000L)
             }
         }
+    }
+
+    fun hasFinished(): Boolean{
+        return timerValue.value == 0L
     }
 
     fun stopTimer(){
