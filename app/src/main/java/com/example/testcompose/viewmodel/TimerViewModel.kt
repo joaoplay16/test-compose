@@ -19,7 +19,7 @@ class TimerViewModel : ViewModel() {
     }
 
     fun startTimer(action: () -> Unit){
-        if (timerValue.value != 0L) {
+        if (timerValue.value != 0L && timer == null) {
             timer = Timer()
             viewModelScope.launch {
                 timer?.scheduleAtFixedRate( object : TimerTask() {
@@ -39,7 +39,11 @@ class TimerViewModel : ViewModel() {
         return timerValue.value == 0L
     }
 
+    /**
+     * Discard currently schedule tasks and destroy the current timer
+     * */
     fun stopTimer(){
         timer?.cancel()
+        timer = null
     }
 }
