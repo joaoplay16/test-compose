@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class TimeViewModel : ViewModel() {
+class TimerViewModel : ViewModel() {
     private var timer: Timer? = null
 
     private var _timerValue: MutableState<Long> = mutableStateOf(0)

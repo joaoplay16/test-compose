@@ -30,10 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.theme.TestComposeTheme
 import com.example.testcompose.util.playSound
-import com.example.testcompose.viewmodel.TimeViewModel
+import com.example.testcompose.viewmodel.TimerViewModel
 
 class MainActivity : ComponentActivity() {
-    val timerViewModel by viewModels<TimeViewModel>()
+    val timerViewModel by viewModels<TimerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp( context: Context, timerViewModel: TimeViewModel,) {
+fun MyApp(context: Context, timerViewModel: TimerViewModel,) {
 
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
 

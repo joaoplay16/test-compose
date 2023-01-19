@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
 import com.example.testcompose.util.playSound
-import com.example.testcompose.viewmodel.TimeViewModel
+import com.example.testcompose.viewmodel.TimerViewModel
 
 
 @Composable
@@ -51,7 +51,7 @@ fun CountDownTimer(
 @Preview
 @Composable
 fun PreviewCountDownTimer() {
-    val viewModel = TimeViewModel()
+    val viewModel = TimerViewModel()
     viewModel.setTimeValue(30)
     val count by viewModel.timerValue
 
