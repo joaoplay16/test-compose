@@ -2,6 +2,7 @@ package com.example.testcompose
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -17,7 +18,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.testcompose.ui.animation.ProgressIndicator
 import com.example.testcompose.ui.theme.TestComposeTheme
+import java.io.File
+import java.io.FileOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 
 class DownloadActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +35,7 @@ class DownloadActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
+                    DownloadScreen()
                 }
             }
         }
@@ -84,6 +90,57 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
                 )
             }
         }
+        ProgressIndicator()
+    }
+}
+
+fun download(url: String, saveDir: String) {
+    val BUFFER_SIZE = 4096
+
+    val connection = URL(url).openConnection() as HttpURLConnection
+
+    val inputStream = connection.inputStream
+
+    val responseCode = connection.responseCode;
+
+    if (responseCode == HttpURLConnection.HTTP_OK) {
+        var fileName = "javafile.jar"
+        val disposition = connection.getHeaderField("Content-Disposition")
+        val contentType = connection.contentType
+        val contentLength = connection.contentLength
+
+        Log.d("DOWNLOAD", "$contentType\n $contentLength")
+
+//        if (disposition != null) {
+//            val index = disposition.indexOf("filename=")
+//            if (index > 0) {
+//                fileName = disposition.substring(
+//                    index + 10,
+//                    disposition.length - 1
+//                )
+//            }
+//        } else {
+//            fileName = url.substring(
+//                url.lastIndexOf("/") + 1,
+//                url.length
+//            )
+//        }
+
+        val saveFilePath = "$saveDir${File.separator}$fileName"
+
+        val baos = FileOutputStream(saveFilePath)
+
+        val buffer = ByteArray(BUFFER_SIZE)
+
+        var bytesRead = -1
+
+        while ((inputStream.read(buffer).also { bytesRead = it }) != -1) {
+            baos.write(buffer, 0, bytesRead)
+        }
+
+        connection.disconnect()
+        inputStream.close()
+        baos.close()
     }
 }
 
