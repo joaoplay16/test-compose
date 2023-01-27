@@ -2,6 +2,7 @@ package com.example.testcompose
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -61,7 +62,10 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
         )
         val coroutineScope = rememberCoroutineScope()
         Row {
-            var url by remember { mutableStateOf("") }
+            var url by remember {
+                mutableStateOf("https://update.softniels.com.br/apk/app-debug.apk")
+            }
+            Log.d("DOWNLOAD", "url $url")
 
             TextField(
                 modifier = modifier
@@ -95,10 +99,16 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
                     storagePermissionState.launchPermissionRequest()
 
                     coroutineScope.launch(Dispatchers.IO) {
-                        download(
-                            "http://jdbc.postgresql.org/download/postgresql-9.2-1002.jdbc4.jar",
-                            "/emulated/0"
-                        )
+                        val downloadPath = Environment
+                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                        try {
+                            download(
+                                url,
+                                downloadPath.absolutePath
+                            )
+                        }catch (e: Exception){
+                            e.printStackTrace()
+                        }
                     }
                 }
             ) {
@@ -130,46 +140,37 @@ fun download(url: String, saveDir: String) {
 
     val inputStream = connection.inputStream
 
-    val responseCode = connection.responseCode;
+    val responseCode = connection.responseCode
 
     if (responseCode == HttpURLConnection.HTTP_OK) {
-        var fileName = "javafile.jar"
-//        val disposition = connection.getHeaderField("Content-Disposition")
+        val disposition = connection.getHeaderField("Content-Disposition")
         val contentType = connection.contentType
         val contentLength = connection.contentLength
 
-        Log.d("DOWNLOAD", "$contentType\n $contentLength")
+        Log.d("DOWNLOAD", "$contentType\n $contentLength\n $disposition")
 
-//        if (disposition != null) {
-//            val index = disposition.indexOf("filename=")
-//            if (index > 0) {
-//                fileName = disposition.substring(
-//                    index + 10,
-//                    disposition.length - 1
-//                )
-//            }
-//        } else {
-//            fileName = url.substring(
-//                url.lastIndexOf("/") + 1,
-//                url.length
-//            )
-//        }
+        val fileName = url.substring(
+            url.lastIndexOf("/") + 1,
+            url.length
+        )
 
         val saveFilePath = "$saveDir${File.separator}$fileName"
 
-        val baos = FileOutputStream(saveFilePath)
+        Log.d("DOWNLOAD", "saveFilePath $saveFilePath")
+
+        val outputStream = FileOutputStream(saveFilePath)
 
         val buffer = ByteArray(BUFFER_SIZE)
 
         var bytesRead = -1
 
         while ((inputStream.read(buffer).also { bytesRead = it }) != -1) {
-            baos.write(buffer, 0, bytesRead)
+            outputStream.write(buffer, 0, bytesRead)
         }
 
         connection.disconnect()
         inputStream.close()
-        baos.close()
+        outputStream.close()
     }
 }
 
