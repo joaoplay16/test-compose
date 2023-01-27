@@ -27,7 +27,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.net.HttpURLConnection
+import java.net.MalformedURLException
 import java.net.URL
 
 class DownloadActivity : ComponentActivity() {
@@ -115,7 +117,13 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
     }
 }
 
+@Throws(IOException::class, MalformedURLException::class)
 fun download(url: String, saveDir: String) {
+
+    if (!url.startsWith("http") || url.isBlank()) {
+        throw MalformedURLException("invalid url")
+    }
+
     val BUFFER_SIZE = 4096
 
     val connection = URL(url).openConnection() as HttpURLConnection
