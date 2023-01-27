@@ -61,11 +61,13 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
             permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
         val coroutineScope = rememberCoroutineScope()
+
+        var downloadPercentage by remember{ mutableStateOf(0) }
+
         Row {
             var url by remember {
-                mutableStateOf("https://update.softniels.com.br/apk/app-debug.apk")
+                mutableStateOf("https://www.sec.unicamp.br/videos/flv/1316806948.flv")
             }
-            Log.d("DOWNLOAD", "url $url")
 
             TextField(
                 modifier = modifier
@@ -97,14 +99,17 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
                     .clip(RoundedCornerShape(100.dp)),
                 onClick = {
                     storagePermissionState.launchPermissionRequest()
-
+                    downloadPercentage = 0
                     coroutineScope.launch(Dispatchers.IO) {
                         val downloadPath = Environment
                             .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                         try {
                             download(
-                                url,
-                                downloadPath.absolutePath
+                                url = url,
+                                saveDir = downloadPath.absolutePath,
+                                percentage = {   percentage ->
+                                    downloadPercentage = percentage
+                                }
                             )
                         }catch (e: Exception){
                             e.printStackTrace()
@@ -119,7 +124,7 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
             }
         }
 
-        ProgressIndicator()
+        ProgressIndicator(indicatorValue = downloadPercentage)
 
         if(!storagePermissionState.status.isGranted){
             Text(text = "Storage permission needed!")
@@ -128,7 +133,7 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
 }
 
 @Throws(IOException::class, MalformedURLException::class)
-fun download(url: String, saveDir: String) {
+fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
 
     if (!url.startsWith("http") || url.isBlank()) {
         throw MalformedURLException("invalid url")
@@ -147,6 +152,7 @@ fun download(url: String, saveDir: String) {
         val contentType = connection.contentType
         val contentLength = connection.contentLength
 
+
         Log.d("DOWNLOAD", "$contentType\n $contentLength\n $disposition")
 
         val fileName = url.substring(
@@ -162,10 +168,14 @@ fun download(url: String, saveDir: String) {
 
         val buffer = ByteArray(BUFFER_SIZE)
 
-        var bytesRead = -1
+        var bytesRead: Int
+
+        var downloadPercentage: Int
 
         while ((inputStream.read(buffer).also { bytesRead = it }) != -1) {
             outputStream.write(buffer, 0, bytesRead)
+            downloadPercentage = ((outputStream.channel.size().toDouble() / contentLength.toDouble()) * 100).toInt()
+            percentage(downloadPercentage)
         }
 
         connection.disconnect()
@@ -178,7 +188,7 @@ fun download(url: String, saveDir: String) {
 @Composable
 fun PreviewDownloadScreen() {
     TestComposeTheme {
-        Surface() {
+        Surface {
             DownloadScreen()
         }
     }
