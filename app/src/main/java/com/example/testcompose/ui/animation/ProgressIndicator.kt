@@ -1,6 +1,6 @@
 package com.example.testcompose.ui.animation
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,24 +42,26 @@ fun ProgressIndicator(
         maxIndicatorValue
     }
 
-    var animatedIndicatorValue by remember { mutableStateOf(0f) }
+    val percentage = (allowedIndicatorValue.toFloat() / maxIndicatorValue.toFloat()) * 100
+
+    val animatedIndicatorValue = remember { Animatable(0f) }
+
+    LaunchedEffect(key1 = (percentage == 100f), block = {
+        animatedIndicatorValue.snapTo(0f)
+    })
+
     LaunchedEffect(key1 = allowedIndicatorValue ){
-        animatedIndicatorValue = allowedIndicatorValue.toFloat()
+       animatedIndicatorValue.animateTo(
+           targetValue = percentage,
+           animationSpec =  tween(1000)
+       )
     }
-
-    val percentage = (animatedIndicatorValue / maxIndicatorValue) * 100
-
-    val animatedProgressPercentage by animateFloatAsState(
-        targetValue = percentage,
-        animationSpec = tween(1000)
-    )
-
 
     Column(modifier = Modifier
         .size(canvasSize)
         .drawBehind {
             foregroundLine(
-                percentageProgress = animatedProgressPercentage,
+                percentageProgress = animatedIndicatorValue.value,
                 componentSize = size,
                 indicatorColor = foregroundIndicatorColor,
                 indicatorStrokeWidth = foregroundIndicatorStrokeWidth
