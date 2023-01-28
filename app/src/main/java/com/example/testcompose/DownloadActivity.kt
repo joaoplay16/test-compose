@@ -66,7 +66,7 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
 
         Row {
             var url by remember {
-                mutableStateOf("https://www.sec.unicamp.br/videos/flv/1316806948.flv")
+                mutableStateOf("https://www.nhc.noaa.gov/video/otk_0313_hurricanestormsurge_sm.mov")
             }
 
             TextField(
@@ -98,24 +98,27 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
                     .height(IntrinsicSize.Max)
                     .clip(RoundedCornerShape(100.dp)),
                 onClick = {
-                    storagePermissionState.launchPermissionRequest()
-                    downloadPercentage = 0
-                    coroutineScope.launch(Dispatchers.IO) {
-                        val downloadPath = Environment
-                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                        try {
-                            download(
-                                url = url,
-                                saveDir = downloadPath.absolutePath,
-                                percentage = {   percentage ->
-                                    downloadPercentage = percentage
-                                }
-                            )
-                        }catch (e: Exception){
-                            e.printStackTrace()
+                    if(storagePermissionState.status.isGranted){
+                        coroutineScope.launch(Dispatchers.IO) {
+                            val downloadPath = Environment
+                                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                            try {
+                                download(
+                                    url = url,
+                                    saveDir = downloadPath.absolutePath,
+                                    percentage = {   percentage ->
+                                        downloadPercentage = percentage
+                                    }
+                                )
+                            }catch (e: Exception){
+                                e.printStackTrace()
+                            }
                         }
+                    }else{
+                        storagePermissionState.launchPermissionRequest()
                     }
                 }
+
             ) {
                 Icon(
                     imageVector = Icons.Filled.Download,
