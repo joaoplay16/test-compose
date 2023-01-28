@@ -6,6 +6,7 @@ import android.os.Environment
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,9 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.animation.ProgressIndicator
 import com.example.testcompose.ui.theme.TestComposeTheme
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -34,6 +32,17 @@ import java.net.MalformedURLException
 import java.net.URL
 
 class DownloadActivity : ComponentActivity() {
+
+    private var storagePermissionGranted  by mutableStateOf(false)
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            storagePermissionGranted = isGranted
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -43,23 +52,31 @@ class DownloadActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    DownloadScreen()
+
+                    DownloadScreen(
+                        requestStoragePermission = {
+                            requestPermissionLauncher.launch(
+                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            )
+                        },
+                        storagePermissionGranted = storagePermissionGranted)
                 }
             }
         }
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun DownloadScreen(modifier: Modifier = Modifier) {
+fun DownloadScreen(
+    modifier: Modifier = Modifier,
+    storagePermissionGranted: Boolean = false,
+    requestStoragePermission: () -> Unit
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val storagePermissionState = rememberPermissionState(
-            permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
+
         val coroutineScope = rememberCoroutineScope()
 
         var downloadPercentage by remember{ mutableStateOf(0) }
@@ -77,6 +94,7 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
                 onValueChange = {
                     url = it
                 },
+                maxLines = 1,
                 placeholder = { Text(text = "Url") },
                 leadingIcon = {
                     Icon(
@@ -98,7 +116,7 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
                     .height(IntrinsicSize.Max)
                     .clip(RoundedCornerShape(100.dp)),
                 onClick = {
-                    if(storagePermissionState.status.isGranted){
+                    if(storagePermissionGranted){
                         coroutineScope.launch(Dispatchers.IO) {
                             val downloadPath = Environment
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
@@ -115,7 +133,7 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
                             }
                         }
                     }else{
-                        storagePermissionState.launchPermissionRequest()
+                        requestStoragePermission()
                     }
                 }
 
@@ -129,7 +147,7 @@ fun DownloadScreen(modifier: Modifier = Modifier) {
 
         ProgressIndicator(indicatorValue = downloadPercentage)
 
-        if(!storagePermissionState.status.isGranted){
+        if(!storagePermissionGranted){
             Text(text = "Storage permission needed!")
         }
     }
@@ -142,7 +160,7 @@ fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
         throw MalformedURLException("invalid url")
     }
 
-    val BUFFER_SIZE = 4096
+    val bufferSize = 4096
 
     val connection = URL(url).openConnection() as HttpURLConnection
 
@@ -169,7 +187,7 @@ fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
 
         val outputStream = FileOutputStream(saveFilePath)
 
-        val buffer = ByteArray(BUFFER_SIZE)
+        val buffer = ByteArray(bufferSize)
 
         var bytesRead: Int
 
@@ -192,7 +210,10 @@ fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
 fun PreviewDownloadScreen() {
     TestComposeTheme {
         Surface {
-            DownloadScreen()
+            DownloadScreen(
+                storagePermissionGranted = true,
+                requestStoragePermission = {}
+            )
         }
     }
 }
