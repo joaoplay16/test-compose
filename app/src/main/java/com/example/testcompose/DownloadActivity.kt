@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.animation.ProgressIndicator
 import com.example.testcompose.ui.theme.TestComposeTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -74,18 +75,22 @@ fun DownloadScreen(
     storagePermissionGranted: Boolean = false,
     requestStoragePermission: () -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+    var downloadPercentage by remember{ mutableStateOf(0) }
+
+    var job by remember {
+        mutableStateOf<Job?>(null)
+    }
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val coroutineScope = rememberCoroutineScope()
-
-        var downloadPercentage by remember{ mutableStateOf(0) }
-
         Row {
             var url by remember {
-                mutableStateOf("https://www.nhc.noaa.gov/video/otk_0313_hurricanestormsurge_sm.mov")
+                mutableStateOf("https://www.nhc.noaa.gov/video/HurSeas2008-captioned-web.mp4")
             }
 
             TextField(
@@ -119,7 +124,8 @@ fun DownloadScreen(
                     .clip(RoundedCornerShape(100.dp)),
                 onClick = {
                     if(storagePermissionGranted){
-                        coroutineScope.launch(Dispatchers.IO) {
+                        job = coroutineScope.launch(Dispatchers.IO){
+
                             val downloadPath = Environment
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                             try {
@@ -134,6 +140,9 @@ fun DownloadScreen(
                                 e.printStackTrace()
                             }
                         }
+
+                        Log.d("JOB", "isCancelled ${job!!.isCancelled}")
+
                     }else{
                         requestStoragePermission()
                     }
@@ -148,6 +157,17 @@ fun DownloadScreen(
         }
 
         ProgressIndicator(indicatorValue = downloadPercentage)
+
+        Button(onClick = {
+            job?.let{
+                it.cancel()
+                Log.d("JOB", "job cancelled = ${it.isCancelled}")
+            }
+            Log.d("JOB", "job is null = ${job == null}")
+
+        }) {
+            Text("Cancel")
+        }
 
         if(!storagePermissionGranted){
             Text(text = "Storage permission needed!")
