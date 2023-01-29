@@ -24,6 +24,7 @@ import com.example.testcompose.ui.animation.ProgressIndicator
 import com.example.testcompose.ui.theme.TestComposeTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -59,7 +60,8 @@ class DownloadActivity : ComponentActivity() {
                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                             )
                         },
-                        storagePermissionGranted = storagePermissionGranted)
+                        storagePermissionGranted = storagePermissionGranted
+                    )
                 }
             }
         }
@@ -154,7 +156,7 @@ fun DownloadScreen(
 }
 
 @Throws(IOException::class, MalformedURLException::class)
-fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
+suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
 
     if (!url.startsWith("http") || url.isBlank()) {
         throw MalformedURLException("invalid url")
@@ -162,46 +164,49 @@ fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
 
     val bufferSize = 4096
 
-    val connection = URL(url).openConnection() as HttpURLConnection
+    withContext(Dispatchers.IO){
 
-    val inputStream = connection.inputStream
+        val connection = URL(url).openConnection() as HttpURLConnection
 
-    val responseCode = connection.responseCode
+        val inputStream = connection.inputStream
 
-    if (responseCode == HttpURLConnection.HTTP_OK) {
-        val disposition = connection.getHeaderField("Content-Disposition")
-        val contentType = connection.contentType
-        val contentLength = connection.contentLength
+        val responseCode = connection.responseCode
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            val disposition = connection.getHeaderField("Content-Disposition")
+            val contentType = connection.contentType
+            val contentLength = connection.contentLength
 
 
-        Log.d("DOWNLOAD", "$contentType\n $contentLength\n $disposition")
+            Log.d("DOWNLOAD", "$contentType\n $contentLength\n $disposition")
 
-        val fileName = url.substring(
-            url.lastIndexOf("/") + 1,
-            url.length
-        )
+            val fileName = url.substring(
+                url.lastIndexOf("/") + 1,
+                url.length
+            )
 
-        val saveFilePath = "$saveDir${File.separator}$fileName"
+            val saveFilePath = "$saveDir${File.separator}$fileName"
 
-        Log.d("DOWNLOAD", "saveFilePath $saveFilePath")
+            Log.d("DOWNLOAD", "saveFilePath $saveFilePath")
 
-        val outputStream = FileOutputStream(saveFilePath)
+            val outputStream = FileOutputStream(saveFilePath)
 
-        val buffer = ByteArray(bufferSize)
+            val buffer = ByteArray(bufferSize)
 
-        var bytesRead: Int
+            var bytesRead: Int
 
-        var downloadPercentage: Int
+            var downloadPercentage: Int
 
-        while ((inputStream.read(buffer).also { bytesRead = it }) != -1) {
-            outputStream.write(buffer, 0, bytesRead)
-            downloadPercentage = ((outputStream.channel.size().toDouble() / contentLength.toDouble()) * 100).toInt()
-            percentage(downloadPercentage)
+            while ((inputStream.read(buffer).also { bytesRead = it }) != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+                downloadPercentage = ((outputStream.channel.size().toDouble() / contentLength.toDouble()) * 100).toInt()
+                percentage(downloadPercentage)
+            }
+
+            connection.disconnect()
+            inputStream.close()
+            outputStream.close()
         }
-
-        connection.disconnect()
-        inputStream.close()
-        outputStream.close()
     }
 }
 
