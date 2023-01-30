@@ -22,10 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.animation.ProgressIndicator
 import com.example.testcompose.ui.theme.TestComposeTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -42,7 +39,7 @@ class DownloadActivity : ComponentActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted ->
             storagePermissionGranted = isGranted
-    }
+        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,7 +122,6 @@ fun DownloadScreen(
                 onClick = {
                     if(storagePermissionGranted){
                         job = coroutineScope.launch(Dispatchers.IO){
-
                             val downloadPath = Environment
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                             try {
@@ -184,8 +180,7 @@ suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
 
     val bufferSize = 4096
 
-    withContext(Dispatchers.IO){
-
+    withContext(Dispatchers.IO) {
         val connection = URL(url).openConnection() as HttpURLConnection
 
         val inputStream = connection.inputStream
@@ -193,12 +188,9 @@ suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
         val responseCode = connection.responseCode
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            val disposition = connection.getHeaderField("Content-Disposition")
-            val contentType = connection.contentType
+//            val disposition = connection.getHeaderField("Content-Disposition")
+//            val contentType = connection.contentType
             val contentLength = connection.contentLength
-
-
-            Log.d("DOWNLOAD", "$contentType\n $contentLength\n $disposition")
 
             val fileName = url.substring(
                 url.lastIndexOf("/") + 1,
@@ -217,9 +209,10 @@ suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
 
             var downloadPercentage: Int
 
-            while ((inputStream.read(buffer).also { bytesRead = it }) != -1) {
+            while ((inputStream.read(buffer).also { bytesRead = it }) != -1 && isActive) {
                 outputStream.write(buffer, 0, bytesRead)
-                downloadPercentage = ((outputStream.channel.size().toDouble() / contentLength.toDouble()) * 100).toInt()
+                downloadPercentage = ((outputStream.channel.size()
+                    .toDouble() / contentLength.toDouble()) * 100).toInt()
                 percentage(downloadPercentage)
             }
 
