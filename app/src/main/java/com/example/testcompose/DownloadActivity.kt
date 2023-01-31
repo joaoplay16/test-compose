@@ -172,7 +172,8 @@ fun DownloadScreen(
 }
 
 @Throws(IOException::class, MalformedURLException::class)
-suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
+suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit)
+    = withContext(Dispatchers.IO) {
 
     if (!url.startsWith("http") || url.isBlank()) {
         throw MalformedURLException("invalid url")
@@ -180,7 +181,6 @@ suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
 
     val bufferSize = 4096
 
-    withContext(Dispatchers.IO) {
         val connection = URL(url).openConnection() as HttpURLConnection
 
         val inputStream = connection.inputStream
@@ -206,7 +206,6 @@ suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
             val buffer = ByteArray(bufferSize)
 
             var bytesRead: Int
-
             var downloadPercentage: Int
 
             while ((inputStream.read(buffer).also { bytesRead = it }) != -1 && isActive) {
@@ -220,7 +219,6 @@ suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit) {
             inputStream.close()
             outputStream.close()
         }
-    }
 }
 
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
