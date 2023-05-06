@@ -1,24 +1,23 @@
 package com.example.testcompose.ui.screens.formscreen
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 class FormViewModel : ViewModel() {
 
-    var _emailState = mutableStateOf("")
-    val emailState = _emailState
-
-    var _passwordState = mutableStateOf("")
-    val passwordState = _emailState
+    var state by mutableStateOf(FormScreenUiState())
+    private set
 
     fun onEvent(event: FormScreenUiEvent){
         when(event){
             is FormScreenUiEvent.onEmailChanged -> {
-               _emailState.value = event.email
+                state = state.copy(email = event.email)
             }
 
             is FormScreenUiEvent.onPasswordChanged -> {
-                _passwordState.value = event.password
+                state = state.copy(password = event.password)
             }
 
             else -> {}
