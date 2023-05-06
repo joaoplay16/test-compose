@@ -4,10 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class FormViewModel : ViewModel() {
 
     var state by mutableStateOf(FormScreenUiState())
+    private set
+
+    var isSubmitted = MutableStateFlow<Boolean?>(null)
     private set
 
     fun onEvent(event: FormScreenUiEvent){
@@ -20,7 +26,11 @@ class FormViewModel : ViewModel() {
                 state = state.copy(password = event.password)
             }
 
-            else -> {}
+            is FormScreenUiEvent.Submit -> {
+                viewModelScope.launch {
+                    isSubmitted.emit(true)
+                }
+            }
         }
     }
 }
