@@ -10,4 +10,5 @@
     <string name="title_activity_intrisec">IntrisecActivity</string>
     <string name="title_activity_ad_mob">AdMobActivity</string>
     <string name="title_activity_download">DownloadActivity</string>
+    <string name="title_activity_state">StateActivity</string>
 </resources>
