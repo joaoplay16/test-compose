@@ -18,14 +18,6 @@ class FormViewModel : ViewModel() {
 
     fun onEvent(event: FormScreenUiEvent){
         when(event){
-            is FormScreenUiEvent.onEmailChanged -> {
-                state = state.copy(email = event.email)
-            }
-
-            is FormScreenUiEvent.onPasswordChanged -> {
-                state = state.copy(password = event.password)
-            }
-
             is FormScreenUiEvent.Submit -> {
                 viewModelScope.launch {
                     isSubmitted.emit(true)
