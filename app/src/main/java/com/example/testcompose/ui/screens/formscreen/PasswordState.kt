@@ -16,8 +16,14 @@
 
 package com.example.testcompose.ui.screens.formscreen
 
-class PasswordState :
-    TextFieldState(validator = ::isPasswordValid, errorFor = ::passwordValidationError)
+class PasswordState(password: String? = null) :
+    TextFieldState(validator = ::isPasswordValid, errorFor = ::passwordValidationError){
+        init {
+            password?.let{
+                text = it
+            }
+        }
+    }
 
 private fun passwordAndConfirmationValid(password: String, confirmedPassword: String): Boolean {
     return isPasswordValid(password) && password == confirmedPassword
