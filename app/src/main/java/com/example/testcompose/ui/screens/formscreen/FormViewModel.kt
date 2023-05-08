@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 class FormViewModel : ViewModel() {
@@ -13,7 +13,7 @@ class FormViewModel : ViewModel() {
     var state by mutableStateOf(FormScreenUiState())
     private set
 
-    var isSubmitted = MutableStateFlow<Boolean?>(null)
+    var isSubmitted = MutableSharedFlow<Boolean?>()
     private set
 
     fun onEvent(event: FormScreenUiEvent){
