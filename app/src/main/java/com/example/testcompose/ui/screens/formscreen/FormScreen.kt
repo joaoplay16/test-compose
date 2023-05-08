@@ -13,6 +13,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.theme.TestComposeTheme
@@ -26,16 +27,18 @@ fun FormScreen(
     Column(modifier) {
         Email(
             emailState = state.email,
-            onValueChange = { onEvent(FormScreenUiEvent.onEmailChanged(it)) }
-            )
+        )
         Spacer(Modifier.padding(8.dp))
         Password(
             passwordState = state.password,
-            onValueChange = { onEvent(FormScreenUiEvent.onPasswordChanged(it)) })
+        )
         Spacer(Modifier.padding(8.dp))
 
         Button(
-            onClick = { onEvent(FormScreenUiEvent.Submit) }
+            onClick = {
+                state.email.enableShowErrors()
+                onEvent(FormScreenUiEvent.Submit) },
+            enabled = state.email.isValid
         ){
             Text(text = "submit")
         }
@@ -45,16 +48,20 @@ fun FormScreen(
 @Composable
 fun Email(
     emailState: EmailState,
-    onValueChange: (EmailState) -> Unit
 ) {
     TextField(
+        modifier = Modifier.onFocusChanged { focusState ->
+            emailState.onFocusChange(focusState.isFocused)
+            if (!focusState.isFocused) {
+                emailState.enableShowErrors()
+            }
+        },
         value = emailState.text,
         placeholder = {
             Text("Login")
         },
         onValueChange = {
-            onValueChange(EmailState(it))
-            emailState.enableShowErrors()
+            emailState.text = it
         }
     )
 
@@ -64,7 +71,6 @@ fun Email(
 @Composable
 fun Password(
     passwordState: PasswordState,
-    onValueChange: (PasswordState) -> Unit
 ) {
     TextField(
         value = passwordState.text,
@@ -72,7 +78,7 @@ fun Password(
             Text("Password")
         },
         onValueChange = {
-            onValueChange(PasswordState(it))
+            passwordState.text = it
             passwordState.enableShowErrors()
         }
     )
