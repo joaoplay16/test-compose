@@ -14,8 +14,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.testcompose.R
 import com.example.testcompose.ui.theme.TestComposeTheme
 
 @Composable
@@ -36,9 +38,7 @@ fun FormScreen(
 
         Button(
             onClick = {
-                state.email.enableShowErrors()
                 onEvent(FormScreenUiEvent.Submit) },
-            enabled = state.email.isValid
         ){
             Text(text = "submit")
         }
@@ -65,7 +65,9 @@ fun Email(
         }
     )
 
-    emailState.getError()?.let { error -> TextFieldError(textError = error) }
+    emailState.getError()?.let { error ->
+        TextFieldError(textError = stringResource(id = error))
+    }
 }
 
 @Composable
@@ -83,7 +85,9 @@ fun Password(
         }
     )
 
-    passwordState.getError()?.let { error -> TextFieldError(textError = error) }
+    passwordState.getError()?.let {
+            error -> TextFieldError(textError =  stringResource(id = error))
+    }
 }
 
 @Composable

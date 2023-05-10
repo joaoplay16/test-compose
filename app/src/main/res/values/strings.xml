@@ -11,4 +11,6 @@
     <string name="title_activity_ad_mob">AdMobActivity</string>
     <string name="title_activity_download">DownloadActivity</string>
     <string name="title_activity_state">StateActivity</string>
+    <string name="invalid_email">invalid email</string>
+    <string name="empty_field">Empty field</string>
 </resources>

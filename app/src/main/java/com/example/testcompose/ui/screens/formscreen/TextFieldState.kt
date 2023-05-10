@@ -22,8 +22,7 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
 
 open class TextFieldState(
-    private val validator: (String) -> Boolean = { true },
-    private val errorFor: (String) -> String = { "" }
+    private val validators: List<Validator>,
 ) {
     var text: String by mutableStateOf("")
     // was the TextField ever focused
@@ -32,7 +31,7 @@ open class TextFieldState(
     private var displayErrors: Boolean by mutableStateOf(false)
 
     open val isValid: Boolean
-        get() = validator(text)
+        get() = validators.all { it.isValid(text) }
 
     fun onFocusChange(focused: Boolean) {
         isFocused = focused
@@ -48,9 +47,9 @@ open class TextFieldState(
 
     fun showErrors() = !isValid && displayErrors
 
-    open fun getError(): String? {
+    open fun getError(): Int? {
         return if (showErrors()) {
-            errorFor(text)
+            validators.first { !it.isValid(text)}.errorMessage
         } else {
             null
         }
