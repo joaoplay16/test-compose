@@ -16,10 +16,15 @@
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true">
 <!--        <activity-->
-<!--            android:name=".StateActivity"-->
+<!--            android:name=".SliderActivity"-->
 <!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_state"-->
+<!--            android:label="@string/title_activity_slider"-->
 <!--            android:theme="@style/Theme.TestCompose" />-->
+        <!-- <activity -->
+        <!-- android:name=".StateActivity" -->
+        <!-- android:exported="false" -->
+        <!-- android:label="@string/title_activity_state" -->
+        <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
             android:name=".MainActivity"
             android:exported="false"
@@ -80,7 +85,7 @@
         <!-- android:label="@string/title_activity_layouts" -->
         <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
-            android:name=".StateActivity"
+            android:name=".SliderActivity"
             android:exported="true"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.TestCompose">

@@ -13,4 +13,5 @@
     <string name="title_activity_state">StateActivity</string>
     <string name="invalid_email">invalid email</string>
     <string name="empty_field">Empty field</string>
+    <string name="title_activity_slider">SliderActivity</string>
 </resources>
