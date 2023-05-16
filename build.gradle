@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        compose_version = '1.4.2'
+        compose_version = '1.4.3'
         kotlin_version = '1.8.10'
 
     }
@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44'
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
@@ -21,7 +21,6 @@ buildscript {
 }
 
 
-
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
