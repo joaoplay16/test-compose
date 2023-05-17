@@ -14,4 +14,5 @@
     <string name="invalid_email">invalid email</string>
     <string name="empty_field">Empty field</string>
     <string name="title_activity_slider">SliderActivity</string>
+    <string name="title_activity_lottie">LottieActivity</string>
 </resources>
