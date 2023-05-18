@@ -16,10 +16,15 @@
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true">
 <!--        <activity-->
-<!--            android:name=".LottieActivity"-->
+<!--            android:name=".ContextDropDownActivity"-->
 <!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_lottie"-->
+<!--            android:label="@string/title_activity_context_drop_down"-->
 <!--            android:theme="@style/Theme.TestCompose" />-->
+        <!-- <activity -->
+        <!-- android:name=".LottieActivity" -->
+        <!-- android:exported="false" -->
+        <!-- android:label="@string/title_activity_lottie" -->
+        <!-- android:theme="@style/Theme.TestCompose" /> -->
         <!-- <activity -->
         <!-- android:name=".SliderActivity" -->
         <!-- android:exported="false" -->
@@ -90,7 +95,7 @@
         <!-- android:label="@string/title_activity_layouts" -->
         <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
-            android:name=".LottieActivity"
+            android:name=".ContextDropDownActivity"
             android:exported="true"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.TestCompose">
