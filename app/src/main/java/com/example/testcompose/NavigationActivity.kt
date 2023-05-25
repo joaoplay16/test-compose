@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.testcompose.ui.theme.TestComposeTheme
+import com.example.testcompose.viewmodel.SampleViewModel
 
 class NavigationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

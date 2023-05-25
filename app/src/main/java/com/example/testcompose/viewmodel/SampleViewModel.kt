@@ -1,4 +1,4 @@
-package com.example.testcompose
+package com.example.testcompose.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
