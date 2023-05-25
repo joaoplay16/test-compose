@@ -16,4 +16,5 @@
     <string name="title_activity_slider">SliderActivity</string>
     <string name="title_activity_lottie">LottieActivity</string>
     <string name="title_activity_context_drop_down">ContextDropDownActivity</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
 </resources>

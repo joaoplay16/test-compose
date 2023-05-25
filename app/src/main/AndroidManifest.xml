@@ -16,10 +16,15 @@
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true">
 <!--        <activity-->
-<!--            android:name=".ContextDropDownActivity"-->
+<!--            android:name=".NavigationActivity"-->
 <!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_context_drop_down"-->
+<!--            android:label="@string/title_activity_navigation"-->
 <!--            android:theme="@style/Theme.TestCompose" />-->
+        <!-- <activity -->
+        <!-- android:name=".ContextDropDownActivity" -->
+        <!-- android:exported="false" -->
+        <!-- android:label="@string/title_activity_context_drop_down" -->
+        <!-- android:theme="@style/Theme.TestCompose" /> -->
         <!-- <activity -->
         <!-- android:name=".LottieActivity" -->
         <!-- android:exported="false" -->
@@ -95,7 +100,7 @@
         <!-- android:label="@string/title_activity_layouts" -->
         <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
-            android:name=".ContextDropDownActivity"
+            android:name=".NavigationActivity"
             android:exported="true"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.TestCompose">
