@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true">
+<!--                <activity-->
+<!--                    android:name=".SwipeActivity"-->
+<!--                    android:exported="false"-->
+<!--                    android:label="@string/title_activity_navigation"-->
+<!--                    android:theme="@style/Theme.TestCompose" />-->
 <!--        <activity-->
 <!--            android:name=".NavigationActivity"-->
 <!--            android:exported="false"-->
@@ -100,7 +105,7 @@
         <!-- android:label="@string/title_activity_layouts" -->
         <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
-            android:name=".NavigationActivity"
+            android:name=".SwipeActivity"
             android:exported="true"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.TestCompose">
