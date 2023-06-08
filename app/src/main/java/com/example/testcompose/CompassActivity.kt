@@ -16,6 +16,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.testcompose.ui.animation.CompassAnimationStyled
 import com.example.testcompose.ui.theme.TestComposeTheme
 import kotlin.math.roundToInt
 
