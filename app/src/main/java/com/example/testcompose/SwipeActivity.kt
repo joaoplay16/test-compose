@@ -1,6 +1,8 @@
 package com.example.testcompose
 
 import android.os.Bundle
+import android.view.GestureDetector
+import android.view.MotionEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -30,16 +32,38 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
+import com.example.testcompose.util.CustomGestureListener
 import kotlin.math.roundToInt
 
 class SwipeActivity : ComponentActivity() {
+    private lateinit var gestureDetector: GestureDetector
+    private var screenWithInPixels: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        screenWithInPixels = resources.displayMetrics.widthPixels
+
+        gestureDetector = GestureDetector(
+            this,
+            CustomGestureListener(screenWithInPixels)
+        )
+
         setContent {
             TestComposeTheme {
                 SwipeScreen()
             }
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        screenWithInPixels = resources.displayMetrics.widthPixels
+
+        event?.let {
+
+                gestureDetector.onTouchEvent(event)
+        }
+        return super.onTouchEvent(event)
     }
 }
 
