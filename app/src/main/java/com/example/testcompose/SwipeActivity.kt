@@ -43,9 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
 import com.example.testcompose.util.CustomGestureListener
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -182,61 +179,59 @@ fun HalfSwipeScreen() {
                 Color.Green.copy(0.2f)
             )
             .pointerInput(Unit) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    detectDragGestures(
-                        onDragStart = { offset ->
-                            initialMotionEvent = offset
-                        },
-                        onDrag = { change, _ ->
-                            change.consume()
+                detectDragGestures(
+                    onDragStart = { offset ->
+                        initialMotionEvent = offset
+                    },
+                    onDrag = { change, _ ->
+                        change.consume()
 
-                            finalMotionEvent = change.position
-                        },
-                        onDragEnd = {
-                            // Check whether touch event is in the swipe area
-                            if (initialMotionEvent.x.toInt() in swipeAreaX) {
-                                // Check whether the swipe is horizontal
-                                if (abs(travelDistanceX) > abs(travelDistanceY)) {
-                                    /* Check whether the horizontal swipe distance has reached the
-                                    acceptable distance for a swipe*/
-                                    if (abs(travelDistanceX).toInt() >= swipeThresholdX) {
-                                        if (travelDistanceX > 0) {
-                                            // Swipe left to right
-                                            Log.d(
-                                                "GESTURE",
-                                                "HalfSwipeScreen: left to right"
-                                            )
-                                        } else {
-                                            // Swipe right to left
-                                            Log.d(
-                                                "GESTURE",
-                                                "HalfSwipeScreen: right to left"
-                                            )
-                                        }
+                        finalMotionEvent = change.position
+                    },
+                    onDragEnd = {
+                        // Check whether touch event is in the swipe area
+                        if (initialMotionEvent.x.toInt() in swipeAreaX) {
+                            // Check whether the swipe is horizontal
+                            if (abs(travelDistanceX) > abs(travelDistanceY)) {
+                                /* Check whether the horizontal swipe distance has reached the
+                                acceptable distance for a swipe*/
+                                if (abs(travelDistanceX).toInt() >= swipeThresholdX) {
+                                    if (travelDistanceX > 0) {
+                                        // Swipe left to right
+                                        Log.d(
+                                            "GESTURE",
+                                            "HalfSwipeScreen: left to right"
+                                        )
+                                    } else {
+                                        // Swipe right to left
+                                        Log.d(
+                                            "GESTURE",
+                                            "HalfSwipeScreen: right to left"
+                                        )
                                     }
-                                } else {
-                                    /* Check whether the vertical swipe distance has reached the
-                                    acceptable distance for a swipe*/
-                                    if (abs(travelDistanceY).toInt() >= swipeThresholdY) {
-                                        if (travelDistanceY > 0) {
-                                            // Swipe upward to downward
-                                            Log.d(
-                                                "GESTURE",
-                                                "HalfSwipeScreen: upward to downward"
-                                            )
-                                        } else {
-                                            // Swipe downward to upward
-                                            Log.d(
-                                                "GESTURE",
-                                                "HalfSwipeScreen: downward to upward"
-                                            )
-                                        }
+                                }
+                            } else {
+                                /* Check whether the vertical swipe distance has reached the
+                                acceptable distance for a swipe*/
+                                if (abs(travelDistanceY).toInt() >= swipeThresholdY) {
+                                    if (travelDistanceY > 0) {
+                                        // Swipe upward to downward
+                                        Log.d(
+                                            "GESTURE",
+                                            "HalfSwipeScreen: upward to downward"
+                                        )
+                                    } else {
+                                        // Swipe downward to upward
+                                        Log.d(
+                                            "GESTURE",
+                                            "HalfSwipeScreen: downward to upward"
+                                        )
                                     }
                                 }
                             }
                         }
-                    )
-                }
+                    }
+                )
             }
     )
 }
