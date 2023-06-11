@@ -195,9 +195,10 @@ fun HalfSwipeScreen() {
                         onDragEnd = {
                             // Check whether touch event is in the swipe area
                             if (initialMotionEvent.x.toInt() in swipeAreaX) {
-                                // Check whether the swipe distance has reached the acceptable distance for a swipe
                                 // Check whether the swipe is horizontal
                                 if (abs(travelDistanceX) > abs(travelDistanceY)) {
+                                    /* Check whether the horizontal swipe distance has reached the
+                                    acceptable distance for a swipe*/
                                     if (abs(travelDistanceX).toInt() >= swipeThresholdX) {
                                         if (travelDistanceX > 0) {
                                             // Swipe left to right
@@ -214,13 +215,8 @@ fun HalfSwipeScreen() {
                                         }
                                     }
                                 } else {
-                                    Log.d(
-                                        "GESTURE",
-                                        "HalfSwipeScreen: travelDistanceX ${
-                                            abs(travelDistanceY)
-                                                .toInt()
-                                        } > $swipeThresholdY"
-                                    )
+                                    /* Check whether the vertical swipe distance has reached the
+                                    acceptable distance for a swipe*/
                                     if (abs(travelDistanceY).toInt() >= swipeThresholdY) {
                                         if (travelDistanceY > 0) {
                                             // Swipe upward to downward
@@ -238,7 +234,6 @@ fun HalfSwipeScreen() {
                                     }
                                 }
                             }
-
                         }
                     )
                 }
