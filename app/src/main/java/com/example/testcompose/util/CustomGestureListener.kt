@@ -9,11 +9,13 @@ class CustomGestureListener(private val screenWithInPixels: Int)
     : GestureDetector.SimpleOnGestureListener() {
 
     override fun onFling(
-        initialMotionEvent: MotionEvent,
+        initialMotionEvent: MotionEvent?,
         finalMotionEvent: MotionEvent,
         velocityX: Float,
         velocityY: Float
     ): Boolean {
+        if (initialMotionEvent == null) return false
+
         val distanceX = finalMotionEvent.x - initialMotionEvent.x
         val distanceY = finalMotionEvent.y - initialMotionEvent.y
 
