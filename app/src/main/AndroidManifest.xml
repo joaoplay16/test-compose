@@ -105,7 +105,7 @@
         <!-- android:label="@string/title_activity_layouts" -->
         <!-- android:theme="@style/Theme.TestCompose" /> -->
         <activity
-            android:name=".SwipeActivity"
+            android:name=".DocumentScannerActivity"
             android:exported="true"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.TestCompose">
