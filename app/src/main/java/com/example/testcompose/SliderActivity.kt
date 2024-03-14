@@ -47,11 +47,10 @@ class SliderActivity : ComponentActivity() {
 
         setContent {
             TestComposeTheme {
-                val pagerState = rememberPagerState()
+                val pagerState = rememberPagerState(pageCount = { images.size })
                 val scope = rememberCoroutineScope()
                 Box(modifier = Modifier.fillMaxSize()){
                     HorizontalPager(
-                        pageCount = images.size,
                         state = pagerState,
                         key = { images[it] },
                         pageSize = PageSize.Fill
