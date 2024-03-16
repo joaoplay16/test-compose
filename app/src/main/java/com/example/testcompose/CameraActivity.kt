@@ -24,12 +24,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Outlined
+import androidx.compose.material.icons.automirrored.filled.FeaturedVideo
+import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,7 +49,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,24 +70,39 @@ class CameraActivity : ComponentActivity() {
 suspend fun ImageCapture.takePicture(executor: Executor): File {
     val photoFile = withContext(Dispatchers.IO) {
         kotlin.runCatching {
-            File.createTempFile("image", "jpg")
+            File.createTempFile(
+                "image",
+                "jpg"
+            )
         }.getOrElse { ex ->
-            Log.e("TakePicture", "Failed to create temporary file", ex)
+            Log.e(
+                "TakePicture",
+                "Failed to create temporary file",
+                ex
+            )
             File("/dev/null")
         }
     }
 
     return suspendCoroutine { continuation ->
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-        takePicture(outputOptions, executor, object : ImageCapture.OnImageSavedCallback {
-            override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                continuation.resume(photoFile)
-            }
-            override fun onError(ex: ImageCaptureException) {
-                Log.e("TakePicture", "Image capture failed", ex)
-                continuation.resumeWithException(ex)
-            }
-        })
+        takePicture(
+            outputOptions,
+            executor,
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    continuation.resume(photoFile)
+                }
+
+                override fun onError(ex: ImageCaptureException) {
+                    Log.e(
+                        "TakePicture",
+                        "Image capture failed",
+                        ex
+                    )
+                    continuation.resumeWithException(ex)
+                }
+            })
     }
 }
 
@@ -119,7 +135,13 @@ fun CameraPreviewScreen() {
             val context = LocalContext.current
             val coroutineScope = rememberCoroutineScope()
             val lifecycleOwner = LocalLifecycleOwner.current
-            var previewUseCase by remember { mutableStateOf<UseCase>(androidx.camera.core.Preview.Builder().build()) }
+            var previewUseCase by remember {
+                mutableStateOf<UseCase>(
+                    androidx.camera.core.Preview.Builder().build()
+                )
+            }
+            var cameraSelector by remember { mutableStateOf(CameraSelector.DEFAULT_BACK_CAMERA) }
+
             val imageCaptureUseCase by remember {
                 mutableStateOf(
                     ImageCapture.Builder()
@@ -134,22 +156,35 @@ fun CameraPreviewScreen() {
                     previewUseCase = it
                 }
             )
-            LaunchedEffect(previewUseCase) {
+            LaunchedEffect(
+                previewUseCase,
+                cameraSelector
+            ) {
                 val cameraProvider = context.getCameraProvider()
                 try {
                     // Must unbind the use-cases before rebinding them.
                     cameraProvider.unbindAll()
                     cameraProvider.bindToLifecycle(
-                        lifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, previewUseCase, imageCaptureUseCase
+                        lifecycleOwner,
+                        cameraSelector,
+                        previewUseCase,
+                        imageCaptureUseCase
                     )
                 } catch (ex: Exception) {
-                    Log.e("CameraCapture", "Failed to bind camera use cases", ex)
+                    Log.e(
+                        "CameraCapture",
+                        "Failed to bind camera use cases",
+                        ex
+                    )
                 }
             }
             if (imageUri != emptyImageUri) {
                 Column(modifier = Modifier) {
                     Image(
-                        modifier = Modifier.size(250.dp, 250.dp),
+                        modifier = Modifier.size(
+                            250.dp,
+                            250.dp
+                        ),
                         painter = rememberAsyncImagePainter(imageUri),
                         contentDescription = "Captured image"
                     )
@@ -161,19 +196,32 @@ fun CameraPreviewScreen() {
                         Text("Remove image")
                     }
                 }
-            }else{
+            } else {
+                Column {
 
-            CaptureButton(
-                hasCameraPermission,
-                cameraLauncher,
-                onClick = {
-                    coroutineScope.launch {
-                        imageCaptureUseCase.takePicture(context.executor).let{ file ->
-                            imageUri = file.toUri()
+                    CaptureButton(
+                        hasCameraPermission,
+                        cameraLauncher,
+                        onClick = {
+                            coroutineScope.launch {
+                                imageCaptureUseCase.takePicture(context.executor).let { file ->
+                                    imageUri = file.toUri()
+                                }
+                            }
                         }
+                    )
+
+                    Button(onClick = {
+                        cameraSelector =
+                            if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
+                                CameraSelector.DEFAULT_FRONT_CAMERA else CameraSelector.DEFAULT_BACK_CAMERA
+                    }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Autorenew,
+                            contentDescription = null
+                        )
                     }
                 }
-            )
             }
         } else {
             IconButton(onClick = { cameraLauncher.launch(Manifest.permission.CAMERA) }) {
