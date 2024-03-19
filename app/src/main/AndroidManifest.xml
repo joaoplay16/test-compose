@@ -20,36 +20,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true">
-<!--                <activity-->
-<!--                    android:name=".SwipeActivity"-->
-<!--                    android:exported="false"-->
-<!--                    android:label="@string/title_activity_navigation"-->
-<!--                    android:theme="@style/Theme.TestCompose" />-->
-<!--        <activity-->
-<!--            android:name=".NavigationActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_navigation"-->
-<!--            android:theme="@style/Theme.TestCompose" />-->
-        <!-- <activity -->
-        <!-- android:name=".ContextDropDownActivity" -->
-        <!-- android:exported="false" -->
-        <!-- android:label="@string/title_activity_context_drop_down" -->
-        <!-- android:theme="@style/Theme.TestCompose" /> -->
-        <!-- <activity -->
-        <!-- android:name=".LottieActivity" -->
-        <!-- android:exported="false" -->
-        <!-- android:label="@string/title_activity_lottie" -->
-        <!-- android:theme="@style/Theme.TestCompose" /> -->
-        <!-- <activity -->
-        <!-- android:name=".SliderActivity" -->
-        <!-- android:exported="false" -->
-        <!-- android:label="@string/title_activity_slider" -->
-        <!-- android:theme="@style/Theme.TestCompose" /> -->
-        <!-- <activity -->
-        <!-- android:name=".StateActivity" -->
-        <!-- android:exported="false" -->
-        <!-- android:label="@string/title_activity_state" -->
-        <!-- android:theme="@style/Theme.TestCompose" /> -->
+        <activity
+            android:name=".SwipeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".NavigationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".ContextDropDownActivity"
+            android:exported="false"
+            android:label="@string/title_activity_context_drop_down"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".LottieActivity"
+            android:exported="false"
+            android:label="@string/title_activity_lottie"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".SliderActivity"
+            android:exported="false"
+            android:label="@string/title_activity_slider"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".StateActivity"
+            android:exported="false"
+            android:label="@string/title_activity_state"
+            android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
@@ -104,13 +104,19 @@
             android:name=".InterstitialAdActivity"
             android:exported="false"
             android:label="@string/title_activity_layouts"
-            android:theme="@style/Theme.TestCompose" /> <!-- <activity -->
-        <!-- android:name=".CompassActivity" -->
-        <!-- android:exported="false" -->
-        <!-- android:label="@string/title_activity_layouts" -->
-        <!-- android:theme="@style/Theme.TestCompose" /> -->
+            android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".DocumentScannerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_layouts"
+            android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".CameraActivity"
+            android:exported="false"
+            android:label="@string/title_activity_layouts"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
+            android:name=".MasterActivity"
             android:exported="true"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.TestCompose">
