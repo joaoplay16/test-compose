@@ -27,7 +27,7 @@ class ListaActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TestComposeTheme {
-
+                ScrollingList()
             }
         }
     }

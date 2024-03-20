@@ -24,7 +24,7 @@ class CustomLayoutActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TestComposeTheme {
-
+                BodyContent()
             }
         }
     }
