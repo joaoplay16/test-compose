@@ -121,6 +121,11 @@
             android:label="@string/title_activity_layouts"
             android:theme="@style/Theme.TestCompose" />
         <activity
+            android:name=".PullToRefreshActivity"
+            android:exported="false"
+            android:label="@string/title_activity_layouts"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".MasterActivity"
             android:exported="true"
             android:screenOrientation="sensor"
