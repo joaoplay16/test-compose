@@ -8,10 +8,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +27,9 @@ class ComplexActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TestComposeTheme {
-
+                Surface{
+                    BodyContente()
+                }
             }
         }
     }
@@ -114,7 +116,7 @@ fun Chip(modifier: Modifier = Modifier, text: String) {
             Box(
                 modifier = Modifier
                     .size(16.dp, 16.dp)
-                    .background(color = MaterialTheme.colors.secondary)
+                    .background(color = MaterialTheme.colorScheme.secondary)
             )
             Spacer(Modifier.width(4.dp))
             Text(text = text)
@@ -148,7 +150,7 @@ fun BodyContente(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun LayoutsCodelabPreviewe() {
+fun LayoutsCodelabPreview() {
     TestComposeTheme() {
         BodyContente()
     }
