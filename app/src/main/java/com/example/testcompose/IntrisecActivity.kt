@@ -22,7 +22,9 @@ class IntrisecActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TestComposeTheme {
-
+                Surface {
+                    TwoTexts(text1 = "Hi", text2 = "there")
+                }
             }
         }
     }
