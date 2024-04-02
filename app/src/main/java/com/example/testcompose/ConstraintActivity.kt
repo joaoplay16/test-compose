@@ -3,11 +3,15 @@ package com.example.testcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +28,20 @@ class ConstraintActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TestComposeTheme {
-                
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
+                    Surface(color = MaterialTheme.colorScheme.tertiary) {
+                        ConstraintLayoutContent()
+                    }
+                    Surface(color = MaterialTheme.colorScheme.primary) {
+                        LargeConstraintLayout()
+                    }
+                    Surface(color = MaterialTheme.colorScheme.tertiary) {
+                        DecoupledConstraintLayout()
+                    }
+                }
             }
         }
     }
@@ -32,7 +49,7 @@ class ConstraintActivity : ComponentActivity() {
 
 @Composable
 fun ConstraintLayoutContent() {
-    ConstraintLayout{
+    ConstraintLayout {
         // Creates references for the three composables
         // in the ConstraintLayout's body
         val (button1, button2, text) = createRefs()
@@ -41,29 +58,43 @@ fun ConstraintLayoutContent() {
         Button(
             onClick = {},
             modifier = Modifier.constrainAs(button1) {
-                top.linkTo(parent.top, margin = 16.dp)
+                top.linkTo(
+                    parent.top,
+                    margin = 16.dp
+                )
 
             }
 
-        ){
-            Text("Button 1")
+        ) {
+            Text(text = "Button 1")
         }
 
-        Text("Text", Modifier.constrainAs(text){
-            top.linkTo(button1.bottom, margin = 16.dp)
+        Text(
+            text = "Text",
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.constrainAs(text) {
+                top.linkTo(
+                    button1.bottom,
+                    margin = 16.dp
+                )
 
-            centerAround(button1.end)
-            
-        })
-        
-        val barrier = createEndBarrier(button1, text)
+                centerAround(button1.end)
+            })
+
+        val barrier = createEndBarrier(
+            button1,
+            text
+        )
         Button(
             onClick = {},
-            modifier = Modifier.constrainAs(button2){
-                top.linkTo(parent.top, margin =16.dp)
+            modifier = Modifier.constrainAs(button2) {
+                top.linkTo(
+                    parent.top,
+                    margin = 16.dp
+                )
                 start.linkTo(barrier)
             }
-        ){
+        ) {
             Text("Button 2")
         }
     }
@@ -74,7 +105,9 @@ fun ConstraintLayoutContent() {
 @Composable
 fun ConstraintLayoutContentPreview() {
     TestComposeTheme {
-        ConstraintLayoutContent()
+        Surface(color = MaterialTheme.colorScheme.primaryContainer) {
+            ConstraintLayoutContent()
+        }
     }
 }
 
@@ -85,10 +118,15 @@ fun LargeConstraintLayout() {
 
         val guideline = createGuidelineFromStart(fraction = 0.5f)
         Text(
-            "This is a very very very very very very very long text",
-            Modifier.constrainAs(text) {
-                linkTo(start = guideline, end = parent.end)
-                width = Dimension.preferredWrapContent.atLeast(100.dp)  }
+            modifier = Modifier.constrainAs(text) {
+                linkTo(
+                    start = guideline,
+                    end = parent.end
+                )
+                width = Dimension.preferredWrapContent.atLeast(100.dp)
+            },
+            text = "This is a very very very very very very very long text",
+            color = MaterialTheme.colorScheme.onPrimary,
         )
     }
 }
@@ -97,29 +135,39 @@ fun LargeConstraintLayout() {
 @Composable
 fun LargeConstraintLayoutPreview() {
     TestComposeTheme {
-        LargeConstraintLayout()
+        Surface(color = MaterialTheme.colorScheme.primary) {
+            LargeConstraintLayout()
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DecoupledConstraintLayout() {
-    BoxWithConstraints {
-        val constraints = if (maxWidth < maxHeight) {
-            decoupledConstraints(margin = 16.dp) // Portrait constraints
-        } else {
-            decoupledConstraints(margin = 32.dp) // Landscape constraints
-        }
+    TestComposeTheme {
+        Surface(color = MaterialTheme.colorScheme.tertiary) {
+            BoxWithConstraints {
+                val constraints = if (maxWidth < maxHeight) {
+                    decoupledConstraints(margin = 16.dp) // Portrait constraints
+                } else {
+                    decoupledConstraints(margin = 32.dp) // Landscape constraints
+                }
 
-        ConstraintLayout(constraints) {
-            Button(
-                onClick = { /* Do something */ },
-                modifier = Modifier.layoutId("button")
-            ) {
-                Text("Button")
+                ConstraintLayout(constraints) {
+                    Button(
+                        modifier = Modifier.layoutId("button"),
+                        onClick = { /* Do something */ },
+                    ) {
+                        Text("Button")
+                    }
+
+                    Text(
+                        modifier = Modifier.layoutId("text"),
+                        color = MaterialTheme.colorScheme.onTertiary,
+                        text = "Text",
+                    )
+                }
             }
-
-            Text("Text", Modifier.layoutId("text"))
         }
     }
 }
@@ -130,12 +178,17 @@ private fun decoupledConstraints(margin: Dp): ConstraintSet {
         val text = createRefFor("text")
 
         constrain(button) {
-            top.linkTo(parent.top, margin= margin)
+            top.linkTo(
+                parent.top,
+                margin = margin
+            )
         }
         constrain(text) {
-            top.linkTo(button.bottom, margin)
+            top.linkTo(
+                button.bottom,
+                margin
+            )
             centerHorizontallyTo(button)
-
         }
     }
 }
