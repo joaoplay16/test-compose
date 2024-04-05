@@ -73,6 +73,42 @@ fun TextFieldActivityContent() {
             state = state,
             textStyle = TextStyle(fontSize = 32.sp),
             cursorBrush = SolidColor(Color.Magenta),
+            decorator = TextFieldDecorator { textFieldDecorator ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.Chat,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .size(32.dp)
+                        )
+
+                    }
+
+                    textFieldDecorator()
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.TrendingFlat,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .size(32.dp)
+                        )
+                    }
+                }
+            },
             inputTransformation = CustomInputTransformation
         )
     }
