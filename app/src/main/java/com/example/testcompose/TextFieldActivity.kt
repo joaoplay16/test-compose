@@ -5,13 +5,14 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.TextFieldDecorator
 import androidx.compose.foundation.text2.input.InputTransformation
@@ -70,8 +71,12 @@ fun TextFieldActivityContent() {
 
         BasicTextField2(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background),
+                .border(
+                    color = Color.Black.copy(0.7f),
+                    width = 2.dp,
+                    shape = RoundedCornerShape(40.dp)
+                )
+                .fillMaxWidth(),
             state = state,
             textStyle = TextStyle(fontSize = 32.sp),
             cursorBrush = SolidColor(Color.Magenta),
