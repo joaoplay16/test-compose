@@ -6,9 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,22 +18,22 @@ import androidx.compose.foundation.text2.input.InputTransformation
 import androidx.compose.foundation.text2.input.TextFieldBuffer
 import androidx.compose.foundation.text2.input.TextFieldCharSequence
 import androidx.compose.foundation.text2.input.rememberTextFieldState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.automirrored.filled.Chat
-import androidx.compose.material.icons.automirrored.filled.DriveFileMove
-import androidx.compose.material.icons.automirrored.filled.Feed
 import androidx.compose.material.icons.automirrored.filled.TrendingFlat
-import androidx.compose.material.icons.filled.Abc
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,7 +52,10 @@ class TextFieldActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterialApi::class
+)
 @Composable
 fun TextFieldActivityContent() {
     Column(Modifier.fillMaxSize()) {
@@ -74,14 +76,11 @@ fun TextFieldActivityContent() {
             textStyle = TextStyle(fontSize = 32.sp),
             cursorBrush = SolidColor(Color.Magenta),
             decorator = TextFieldDecorator { textFieldDecorator ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start,
-                    ) {
+                TextFieldDefaults.TextFieldDecorationBox(
+                    value = state.text.toString(),
+                    visualTransformation = VisualTransformation.None,
+                    innerTextField = { textFieldDecorator() },
+                    leadingIcon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.Chat,
                             contentDescription = "",
@@ -89,16 +88,8 @@ fun TextFieldActivityContent() {
                                 .padding(8.dp)
                                 .size(32.dp)
                         )
-
-                    }
-
-                    textFieldDecorator()
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier
-                    ) {
+                    },
+                    trailingIcon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.TrendingFlat,
                             contentDescription = "",
@@ -106,10 +97,38 @@ fun TextFieldActivityContent() {
                                 .padding(8.dp)
                                 .size(32.dp)
                         )
-                    }
-                }
+                    },
+                    enabled = true,
+                    singleLine = false,
+                    interactionSource = remember { MutableInteractionSource() },
+                )
             },
             inputTransformation = CustomInputTransformation
+        )
+
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = state.text.toString(),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.Chat,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(32.dp)
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.TrendingFlat,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(32.dp)
+                )
+            },
+
+            onValueChange = {}
         )
     }
 }
@@ -120,9 +139,9 @@ object CustomInputTransformation : InputTransformation {
         originalValue: TextFieldCharSequence,
         valueWithChanges: TextFieldBuffer
     ) {
-        if (!"Android".contains(valueWithChanges.asCharSequence())) {
-            valueWithChanges.revertAllChanges()
-        }
+//        if (!"Android".contains(valueWithChanges.asCharSequence())) {
+//            valueWithChanges.revertAllChanges()
+//        }
     }
 }
 
