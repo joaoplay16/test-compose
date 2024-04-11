@@ -94,50 +94,48 @@
         <activity
             android:name=".DialogActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
+            android:label="@string/title_activity_dialog"
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".AdMobActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
+            android:label="@string/title_activity_admob"
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".InterstitialAdActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
+            android:label="@string/title_activity_interstialad"
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".DocumentScannerActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
+            android:label="@string/title_activity_documentscanner"
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".CameraActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
+            android:label="@string/title_activity_camera"
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".BiometricActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
+            android:label="@string/title_activity_biometric"
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".PullToRefreshActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
+            android:label="@string/title_activity_pulltorefresh"
             android:theme="@style/Theme.TestCompose" />      <activity
             android:name=".CopyPasteActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".TextFieldActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
+            android:label="@string/title_activity_textfield"
             android:theme="@style/Theme.TestCompose" /> <activity
             android:name=".SwipeToDeleteActivity"
             android:exported="false"
-            android:label="@string/title_activity_layouts"
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".MasterActivity"
@@ -150,7 +148,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
