@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.example.testcompose
 
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,6 +21,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,65 +32,80 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.testcompose.ui.theme.TestComposeTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 class CopyPasteActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TestComposeTheme {
                 Surface {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-
-                        var text by remember {
-                            mutableStateOf("")
-                        }
-
-                        var imageUri by remember {
-                            mutableStateOf(Uri.EMPTY)
-                        }
-
-                        AsyncImage(
-                            model = imageUri,
-                            contentDescription = null,
-                            modifier = Modifier.height(150.dp)
-                        )
-                        BasicTextField2(
-                            value = text,
-                            onValueChange = {
-                                text = it
-                            },
-                            textStyle = TextStyle(fontSize = 14.sp),
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(5.dp))
-                                .background(Color.LightGray)
-                                .padding(16.dp)
-                                .receiveContent(MediaType.All) { content ->
-                                    if (content.hasMediaType(MediaType.Image)) {
-                                        val clipData = content.clipEntry.clipData
-                                        for (index in 0 until clipData.itemCount) {
-                                            val item = clipData.getItemAt(index) ?: continue
-
-                                            imageUri = item.uri ?: continue
-                                        }
-                                    }
-                                    content
-                                }
-                        )
-                    }
-
+                    MainContent()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun MainContent() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        var text by remember {
+            mutableStateOf("")
+        }
+
+        var imageUri by remember {
+            mutableStateOf(Uri.EMPTY)
+        }
+
+        AsyncImage(
+            model = imageUri,
+            contentDescription = null,
+            modifier = Modifier.height(150.dp)
+        )
+        BasicTextField2(
+            value = text,
+            onValueChange = {
+                text = it
+            },
+            textStyle = TextStyle(fontSize = 14.sp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(5.dp))
+                .background(Color.LightGray)
+                .padding(16.dp)
+                .receiveContent(MediaType.All) { content ->
+                    if (content.hasMediaType(MediaType.Image)) {
+                        val clipData = content.clipEntry.clipData
+                        for (index in 0 until clipData.itemCount) {
+                            val item = clipData.getItemAt(index) ?: continue
+
+                            imageUri = item.uri ?: continue
+                        }
+                    }
+
+                    content
+                }
+        )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun MainContentPreview() {
+    TestComposeTheme {
+        Surface {
+            MainContent()
         }
     }
 }
