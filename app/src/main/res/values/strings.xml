@@ -11,7 +11,7 @@
     <string name="title_activity_ad_mob">AdMobActivity</string>
     <string name="title_activity_download">DownloadActivity</string>
     <string name="title_activity_state">StateActivity</string>
-    <string name="title_activity_shortcuts">StateActivity</string>
+    <string name="title_activity_shortcuts">ShorcutActivity</string>
     <string name="title_activity_dialog">DialogActivity</string>
     <string name="title_activity_admob">AdMobActivity</string>
     <string name="title_activity_interstialad">InterstitialAdActivity</string>

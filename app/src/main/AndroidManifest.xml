@@ -125,7 +125,8 @@
             android:name=".PullToRefreshActivity"
             android:exported="false"
             android:label="@string/title_activity_pulltorefresh"
-            android:theme="@style/Theme.TestCompose" />      <activity
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".CopyPasteActivity"
             android:exported="false"
             android:theme="@style/Theme.TestCompose" />
@@ -133,21 +134,32 @@
             android:name=".TextFieldActivity"
             android:exported="false"
             android:label="@string/title_activity_textfield"
-            android:theme="@style/Theme.TestCompose" /> <activity
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".SwipeToDeleteActivity"
             android:exported="false"
             android:theme="@style/Theme.TestCompose" />
         <activity
+            android:name=".ShortcutActivity"
+            android:exported="true"
+            android:label="@string/title_activity_shortcuts"
+            android:theme="@style/Theme.TestCompose">
+        </activity>
+        <activity
             android:name=".MasterActivity"
             android:exported="true"
-            android:screenOrientation="sensor"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.TestCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
