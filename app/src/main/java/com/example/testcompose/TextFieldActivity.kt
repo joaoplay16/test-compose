@@ -14,10 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.TextFieldDecorator
 import androidx.compose.foundation.text2.input.InputTransformation
 import androidx.compose.foundation.text2.input.TextFieldBuffer
 import androidx.compose.foundation.text2.input.TextFieldCharSequence
+import androidx.compose.foundation.text2.input.TextFieldDecorator
 import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.TextField
