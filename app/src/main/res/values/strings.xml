@@ -39,4 +39,5 @@
     <string name="long_label">This shortcut starts the timer</string>
     <string name="disabled_message">Setting the timer is currently not possible</string>
     <string name="title_activity_categorized_list">CategorizedListActivity</string>
+    <string name="title_activity_custom_drawer">CustomDrawerActivity</string>
 </resources>

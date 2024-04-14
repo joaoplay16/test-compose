@@ -22,6 +22,11 @@
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".CustomDrawerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_custom_drawer"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".CategorizedListActivity"
             android:exported="false"
             android:label="@string/title_activity_categorized_list"
@@ -148,8 +153,7 @@
             android:name=".ShortcutActivity"
             android:exported="true"
             android:label="@string/title_activity_shortcuts"
-            android:theme="@style/Theme.TestCompose">
-        </activity>
+            android:theme="@style/Theme.TestCompose"></activity>
         <activity
             android:name=".MasterActivity"
             android:exported="true"
