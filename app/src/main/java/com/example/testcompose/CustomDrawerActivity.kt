@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.testcompose.ui.theme.TestComposeTheme
-import com.stevdza_san.customdrawer.MainScreen
+import com.example.testcompose.ui.screens.drawer.MainScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class CustomDrawerActivity : ComponentActivity() {
