@@ -40,4 +40,5 @@
     <string name="disabled_message">Setting the timer is currently not possible</string>
     <string name="title_activity_categorized_list">CategorizedListActivity</string>
     <string name="title_activity_custom_drawer">CustomDrawerActivity</string>
+    <string name="title_activity_expand_content">ExpandContentActivity</string>
 </resources>
