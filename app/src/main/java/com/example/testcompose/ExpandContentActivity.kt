@@ -16,11 +16,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -80,24 +79,22 @@ fun MainExpandableContent(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-
         BoxWithConstraints(contentAlignment = Alignment.Center) {
 
-            val contentPadding = (maxWidth - 0.dp) / 2
+            val paddingStart = maxWidth / 2
 
             HorizontalPager(
                 state = pagerState,
                 key = { images[it] },
-                pageSize = PageSize.Fixed(maxWidth / 3),
-                pageSpacing = 30.dp,
+                pageSpacing = 40.dp,
                 snapPosition = SnapPosition.Center,
-                contentPadding = PaddingValues(start = 150.dp)
+                contentPadding = PaddingValues(start = paddingStart)
             ) { index ->
                 Image(
-                    modifier = Modifier.height((maxHeight.value * 0.8.dp.value).dp),
+                    modifier = Modifier.width((maxWidth.value * 0.5.dp.value).dp),
                     painter = painterResource(id = images[index]),
                     contentDescription = null,
-                    contentScale = ContentScale.FillHeight
+                    contentScale = ContentScale.FillWidth
                 )
             }
         }
