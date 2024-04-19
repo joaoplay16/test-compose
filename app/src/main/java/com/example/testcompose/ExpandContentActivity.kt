@@ -2,6 +2,7 @@ package com.example.testcompose
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -39,6 +41,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.theme.TestComposeTheme
 import kotlinx.coroutines.launch
@@ -83,10 +86,27 @@ fun MainExpandableContent(modifier: Modifier = Modifier) {
 
             val paddingStart = maxWidth / 2
 
+            val customPageSize = object : PageSize {
+                override fun Density.calculateMainAxisPageSize(
+                    availableSpace: Int,
+                    pageSpacing: Int
+                ): Int {
+
+                    Log.d(
+                        "PAGE",
+                        "availableSpace $availableSpace pageSpacing $pageSpacing "
+                    )
+
+                    return availableSpace + pageSpacing
+                }
+            }
+
+
             HorizontalPager(
                 state = pagerState,
                 key = { images[it] },
                 pageSpacing = 40.dp,
+                pageSize = customPageSize,
                 snapPosition = SnapPosition.Center,
                 contentPadding = PaddingValues(start = paddingStart)
             ) { index ->
