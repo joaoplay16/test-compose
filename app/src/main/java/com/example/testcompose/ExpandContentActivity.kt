@@ -2,7 +2,6 @@ package com.example.testcompose
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,16 +11,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -38,10 +36,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.theme.TestComposeTheme
 import kotlinx.coroutines.launch
@@ -82,41 +80,24 @@ fun MainExpandableContent(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        BoxWithConstraints(contentAlignment = Alignment.Center) {
+        val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
+        val screenHeightDp = LocalConfiguration.current.screenHeightDp.dp
+        val contentPadding = screenWidthDp / 4
 
-            val paddingStart = maxWidth / 2
-
-            val customPageSize = object : PageSize {
-                override fun Density.calculateMainAxisPageSize(
-                    availableSpace: Int,
-                    pageSpacing: Int
-                ): Int {
-
-                    Log.d(
-                        "PAGE",
-                        "availableSpace $availableSpace pageSpacing $pageSpacing "
-                    )
-
-                    return availableSpace + pageSpacing
-                }
-            }
-
-
-            HorizontalPager(
-                state = pagerState,
-                key = { images[it] },
-                pageSpacing = 40.dp,
-                pageSize = customPageSize,
-                snapPosition = SnapPosition.Center,
-                contentPadding = PaddingValues(start = paddingStart)
-            ) { index ->
-                Image(
-                    modifier = Modifier.width((maxWidth.value * 0.5.dp.value).dp),
-                    painter = painterResource(id = images[index]),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth
-                )
-            }
+        HorizontalPager(
+            modifier = Modifier.height((screenHeightDp.value * 0.8).dp),
+            state = pagerState,
+            key = { images[it] },
+            pageSpacing = (screenWidthDp.value * 0.07).dp,
+            snapPosition = SnapPosition.Start,
+            contentPadding = PaddingValues(horizontal = contentPadding)
+        ) { index ->
+            Image(
+                modifier = Modifier.width((screenWidthDp.value * .9).dp),
+                painter = painterResource(id = images[index]),
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth
+            )
         }
         Box(
             modifier = Modifier
