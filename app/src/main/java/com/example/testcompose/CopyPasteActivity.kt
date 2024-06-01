@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.example.testcompose
 
 import android.content.res.Configuration
@@ -10,8 +8,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.content.MediaType
+import androidx.compose.foundation.content.consume
+import androidx.compose.foundation.content.contentReceiver
 import androidx.compose.foundation.content.hasMediaType
-import androidx.compose.foundation.content.receiveContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,9 +18,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text2.BasicTextField2
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +50,7 @@ class CopyPasteActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContent() {
     Column(
@@ -59,24 +59,19 @@ fun MainContent() {
         verticalArrangement = Arrangement.Center
     ) {
 
-        var text by remember {
-            mutableStateOf("")
-        }
-
         var imageUri by remember {
             mutableStateOf(Uri.EMPTY)
         }
+
+        val state = rememberTextFieldState()
 
         AsyncImage(
             model = imageUri,
             contentDescription = null,
             modifier = Modifier.height(150.dp)
         )
-        BasicTextField2(
-            value = text,
-            onValueChange = {
-                text = it
-            },
+        BasicTextField(
+            state,
             textStyle = TextStyle(fontSize = 14.sp),
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -84,18 +79,17 @@ fun MainContent() {
                 .clip(RoundedCornerShape(5.dp))
                 .background(Color.LightGray)
                 .padding(16.dp)
-                .receiveContent(MediaType.All) { content ->
-                    if (content.hasMediaType(MediaType.Image)) {
-                        val clipData = content.clipEntry.clipData
-                        for (index in 0 until clipData.itemCount) {
-                            val item = clipData.getItemAt(index) ?: continue
-
-                            imageUri = item.uri ?: continue
-                        }
+                .contentReceiver { transferableContent ->
+                    if (!transferableContent.hasMediaType(MediaType.Image)) {
+                        return@contentReceiver transferableContent
                     }
 
-                    content
+                    transferableContent.consume { item ->
+                        imageUri = item.uri
+                        true
+                    }
                 }
+
         )
     }
 }
