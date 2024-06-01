@@ -13,12 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.input.InputTransformation
-import androidx.compose.foundation.text2.input.TextFieldBuffer
-import androidx.compose.foundation.text2.input.TextFieldCharSequence
-import androidx.compose.foundation.text2.input.TextFieldDecorator
-import androidx.compose.foundation.text2.input.rememberTextFieldState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.TextFieldBuffer
+import androidx.compose.foundation.text.input.TextFieldDecorator
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -29,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,14 +62,16 @@ fun TextFieldActivityContent() {
     Column(Modifier.fillMaxSize()) {
         val state = rememberTextFieldState()
 
-        state.edit {
-            Log.d(
-                "TEXTFIELD",
-                "hasSelection: $hasSelection"
-            )
+        LaunchedEffect(key1 = state.selection) {
+            state.edit {
+                Log.d(
+                    "TEXTFIELD",
+                    "hasSelection: $hasSelection"
+                )
+            }
         }
 
-        BasicTextField2(
+        BasicTextField(
             modifier = Modifier
                 .border(
                     color = Color.Black.copy(0.7f),
@@ -140,13 +142,10 @@ fun TextFieldActivityContent() {
 
 @ExperimentalFoundationApi
 object CustomInputTransformation : InputTransformation {
-    override fun transformInput(
-        originalValue: TextFieldCharSequence,
-        valueWithChanges: TextFieldBuffer
-    ) {
-//        if (!"Android".contains(valueWithChanges.asCharSequence())) {
-//            valueWithChanges.revertAllChanges()
-//        }
+    override fun TextFieldBuffer.transformInput() {
+        if (!"Android".contains(this.toString())) {
+            this.revertAllChanges()
+        }
     }
 }
 
