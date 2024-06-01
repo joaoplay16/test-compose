@@ -22,6 +22,11 @@
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ListPaneScaffoldActivity"
+            android:exported="false"
+            android:label="@string/title_activity_list_pane_sacaffold"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".ExpandContentActivity"
             android:exported="false"
             android:label="@string/title_activity_expand_content"
