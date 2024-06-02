@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlinx-serialization'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
@@ -36,7 +38,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.5.13'
+        kotlinCompilerExtensionVersion '1.5.14'
     }
     packagingOptions {
         resources {
@@ -91,6 +93,9 @@ dependencies {
 
     implementation "androidx.compose.material3.adaptive:adaptive-navigation:1.0.0-beta02"
     implementation "androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha07"
+
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

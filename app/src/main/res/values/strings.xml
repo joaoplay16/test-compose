@@ -41,5 +41,6 @@
     <string name="title_activity_categorized_list">CategorizedListActivity</string>
     <string name="title_activity_custom_drawer">CustomDrawerActivity</string>
     <string name="title_activity_expand_content">ExpandContentActivity</string>
+    <string name="title_activity_safe_navigation">SafeNavigationActivity</string>
     <string name="title_activity_list_pane_sacaffold">ListPaneScaffoldActivity</string>
 </resources>
