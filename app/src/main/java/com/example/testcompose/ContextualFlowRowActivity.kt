@@ -123,7 +123,7 @@ fun MainFlowRow(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview2() {
+fun MainFlowRowPreview() {
     TestComposeTheme {
         MainFlowRow()
     }
