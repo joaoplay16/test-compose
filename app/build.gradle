@@ -47,6 +47,9 @@ android {
         }
     }
     namespace 'com.example.testcompose'
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.1'
+    }
 }
 
 dependencies {

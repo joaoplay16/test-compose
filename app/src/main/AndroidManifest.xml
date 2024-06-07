@@ -22,6 +22,11 @@
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ContextualFlowRowActivity"
+            android:exported="false"
+            android:label="@string/title_activity_contextual_flow_row"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".AutoNavigationBySizeActivity"
             android:exported="false"
             android:label="@string/title_activity_auto_navigation_by_size"
