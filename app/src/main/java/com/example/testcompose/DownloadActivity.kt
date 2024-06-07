@@ -9,7 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Link
@@ -49,7 +49,7 @@ class DownloadActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colorScheme.background
                 ) {
 
                     DownloadScreen(
@@ -66,6 +66,7 @@ class DownloadActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DownloadScreen(
     modifier: Modifier = Modifier,
@@ -107,10 +108,10 @@ fun DownloadScreen(
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = MaterialTheme.colors.onSecondary.copy(0.3f),
+                    containerColor = MaterialTheme.colorScheme.onSecondary.copy(0.3f),
                     focusedIndicatorColor = Color.Unspecified,
                     unfocusedIndicatorColor = Color.Unspecified,
-                    disabledIndicatorColor = Color.Unspecified
+                    disabledIndicatorColor = Color.Unspecified,
                 )
             )
 

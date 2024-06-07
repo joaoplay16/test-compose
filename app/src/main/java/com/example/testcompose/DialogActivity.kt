@@ -1,5 +1,6 @@
 package com.example.testcompose
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,10 +8,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +54,7 @@ fun AlertDialog() {
                 // Draw a rectangle shape with rounded corners inside the dialog
                 Text(
                     text = "Voce aceita?",
-                    color = MaterialTheme.colors.primary,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(dialogWidth, dialogHeight)
                         .background(Color.White)
@@ -102,7 +103,7 @@ fun Popuper() {
                         text = "Copiar",
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .background(MaterialTheme.colors.primary,
+                            .background(MaterialTheme.colorScheme.primary,
                                 RoundedCornerShape(cornerSize))
                             .padding(6.dp)
                     )
@@ -130,6 +131,7 @@ fun PreviewAlertDialog() {
 }
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable()
 fun PreviewPopuper() {

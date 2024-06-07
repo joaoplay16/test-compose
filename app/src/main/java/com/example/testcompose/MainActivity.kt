@@ -14,10 +14,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -119,7 +119,12 @@ private fun Greetings(names: List<String> = List(1000) { "$it" } ) {
 @Composable
 private fun Greeting(name: String) {
     Card(
-        backgroundColor = MaterialTheme.colors.primary,
+        colors = CardColors(
+            contentColor = MaterialTheme.colorScheme.primary,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            disabledContainerColor = Color.Unspecified,
+            disabledContentColor = Color.Unspecified,
+        ),
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         CardContent(name)
@@ -147,7 +152,7 @@ fun CardContent(name: String) {
             Text(text = "Hello, ")
             Text(
                 text = name,
-                style = MaterialTheme.typography.h4.copy(
+                style = MaterialTheme.typography.labelLarge.copy(
                     fontWeight = FontWeight.ExtraBold
                 )
             )

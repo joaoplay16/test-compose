@@ -2,14 +2,17 @@ package com.example.testcompose
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
@@ -54,8 +62,8 @@ class RewardAdActivity : ComponentActivity() {
                 },
                 enabled = mRewardedAd != null,
                 colors = ButtonDefaults.buttonColors(
-                    disabledBackgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.1f),
-                    disabledContentColor = MaterialTheme.colors.onBackground.copy(alpha = 0.4f),
+                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                    disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
                 )
             ) {
                 Text(text = "Show Rewarded Ad")

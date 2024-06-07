@@ -24,15 +24,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.Icons.Outlined
-import androidx.compose.material.icons.automirrored.filled.FeaturedVideo
 import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -226,7 +224,7 @@ fun CameraPreviewScreen() {
         } else {
             IconButton(onClick = { cameraLauncher.launch(Manifest.permission.CAMERA) }) {
                 Icon(
-                    Outlined.CameraAlt,
+                    Icons.Outlined.CameraAlt,
                     contentDescription = "Câmera"
                 )
             }
@@ -294,7 +292,7 @@ fun CaptureButton(
         }
     }) {
         Icon(
-            Outlined.CameraAlt,
+            Icons.Outlined.CameraAlt,
             contentDescription = "Capturar"
         )
     }

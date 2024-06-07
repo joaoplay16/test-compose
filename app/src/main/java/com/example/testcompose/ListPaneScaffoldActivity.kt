@@ -50,6 +50,7 @@ class ListPaneScaffoldActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun ListDetailLayout(modifier: Modifier = Modifier) {
     val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
