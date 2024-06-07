@@ -180,6 +180,11 @@
             android:label="@string/title_activity_shortcuts"
             android:theme="@style/Theme.TestCompose" />
         <activity
+            android:name=".NotificationActivity"
+            android:exported="true"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".MasterActivity"
             android:exported="true"
             android:screenOrientation="fullSensor"

@@ -45,4 +45,5 @@
     <string name="title_activity_list_pane_sacaffold">ListPaneScaffoldActivity</string>
     <string name="title_activity_auto_navigation_by_size">AutoNavigationBySizeActivity</string>
     <string name="title_activity_contextual_flow_row">ContextualFlowRowActivity</string>
+    <string name="title_activity_notification">Notification Activity</string>
 </resources>
