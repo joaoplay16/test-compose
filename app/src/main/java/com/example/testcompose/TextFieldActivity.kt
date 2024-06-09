@@ -83,10 +83,16 @@ fun TextFieldActivityContent() {
             textStyle = TextStyle(fontSize = 32.sp),
             cursorBrush = SolidColor(Color.Magenta),
             decorator = TextFieldDecorator { textFieldDecorator ->
-                TextFieldDefaults.TextFieldDecorationBox(
+                TextFieldDefaults.DecorationBox(
                     value = state.text.toString(),
-                    visualTransformation = VisualTransformation.None,
                     innerTextField = { textFieldDecorator() },
+                    enabled = true,
+                    singleLine = false,
+                    visualTransformation = VisualTransformation.None,
+                    interactionSource = remember<MutableInteractionSource> { MutableInteractionSource() },
+                    isError = false,
+                    label = null,
+                    placeholder = null,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.Chat,
@@ -105,9 +111,6 @@ fun TextFieldActivityContent() {
                                 .size(32.dp)
                         )
                     },
-                    enabled = true,
-                    singleLine = false,
-                    interactionSource = remember { MutableInteractionSource() },
                 )
             },
             inputTransformation = CustomInputTransformation
