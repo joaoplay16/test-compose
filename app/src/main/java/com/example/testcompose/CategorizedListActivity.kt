@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.testcompose.ui.theme.TestComposeTheme
@@ -98,3 +99,20 @@ class CategorizedListActivity : ComponentActivity() {
             }
         }
     }
+
+@Preview
+@Composable
+fun CategorizedLazyColumnPreview() {
+    val namesList = names.map {
+        Category(
+            name = it.key.toString(),
+            items = it.value
+        )
+    }
+
+    TestComposeTheme {
+        Surface {
+            CategorizedLazyColumn(categories = namesList)
+        }
+    }
+}
