@@ -81,7 +81,7 @@ fun ListDetailLayout(modifier: Modifier = Modifier) {
         },
         detailPane = {
             val content = navigator.currentDestination?.content?.toString() ?: "Select an item"
-//            AnimatedPane {
+            AnimatedPane {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -116,11 +116,11 @@ fun ListDetailLayout(modifier: Modifier = Modifier) {
                         )
                     }
                 }
-//            }
+            }
         },
         extraPane = {
             val content = navigator.currentDestination?.content?.toString() ?: "Select an option"
-//            AnimatedPane {
+            AnimatedPane {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -129,7 +129,7 @@ fun ListDetailLayout(modifier: Modifier = Modifier) {
                 ) {
                     Text(text = content)
                 }
-//            }
+            }
         }
     )
 }
