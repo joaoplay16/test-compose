@@ -7,13 +7,29 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Link
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,7 +38,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.animation.ProgressIndicator
 import com.example.testcompose.ui.theme.TestComposeTheme
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -32,7 +52,7 @@ import java.net.URL
 
 class DownloadActivity : ComponentActivity() {
 
-    private var storagePermissionGranted  by mutableStateOf(false)
+    private var storagePermissionGranted by mutableStateOf(false)
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -75,7 +95,7 @@ fun DownloadScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    var downloadPercentage by remember{ mutableStateOf(0) }
+    var downloadPercentage by remember { mutableStateOf(0) }
 
     var job by remember {
         mutableStateOf<Job?>(null)
@@ -107,8 +127,8 @@ fun DownloadScreen(
                         contentDescription = "Search icon"
                     )
                 },
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = MaterialTheme.colorScheme.onSecondary.copy(0.3f),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = MaterialTheme.colorScheme.onSecondary.copy(0.3f),
                     focusedIndicatorColor = Color.Unspecified,
                     unfocusedIndicatorColor = Color.Unspecified,
                     disabledIndicatorColor = Color.Unspecified,
@@ -121,26 +141,29 @@ fun DownloadScreen(
                     .height(IntrinsicSize.Max)
                     .clip(RoundedCornerShape(100.dp)),
                 onClick = {
-                    if(storagePermissionGranted){
-                        job = coroutineScope.launch(Dispatchers.IO){
+                    if (storagePermissionGranted) {
+                        job = coroutineScope.launch(Dispatchers.IO) {
                             val downloadPath = Environment
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                             try {
                                 download(
                                     url = url,
                                     saveDir = downloadPath.absolutePath,
-                                    percentage = {   percentage ->
+                                    percentage = { percentage ->
                                         downloadPercentage = percentage
                                     }
                                 )
-                            }catch (e: Exception){
+                            } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         }
 
-                        Log.d("JOB", "isCancelled ${job!!.isCancelled}")
+                        Log.d(
+                            "JOB",
+                            "isCancelled ${job!!.isCancelled}"
+                        )
 
-                    }else{
+                    } else {
                         requestStoragePermission()
                     }
                 }
@@ -156,25 +179,37 @@ fun DownloadScreen(
         ProgressIndicator(indicatorValue = downloadPercentage)
 
         Button(onClick = {
-            job?.let{
+            job?.let {
                 it.cancel()
-                Log.d("JOB", "job cancelled = ${it.isCancelled}")
+                Log.d(
+                    "JOB",
+                    "job cancelled = ${it.isCancelled}"
+                )
             }
-            Log.d("JOB", "job is null = ${job == null}")
+            Log.d(
+                "JOB",
+                "job is null = ${job == null}"
+            )
 
         }) {
             Text("Cancel")
         }
 
-        if(!storagePermissionGranted){
+        if (!storagePermissionGranted) {
             Text(text = "Storage permission needed!")
         }
     }
 }
 
-@Throws(IOException::class, MalformedURLException::class)
-suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit)
-    = withContext(Dispatchers.IO) {
+@Throws(
+    IOException::class,
+    MalformedURLException::class
+)
+suspend fun download(
+    url: String,
+    saveDir: String,
+    percentage: (Int) -> Unit
+) = withContext(Dispatchers.IO) {
 
     if (!url.startsWith("http") || url.isBlank()) {
         throw MalformedURLException("invalid url")
@@ -182,47 +217,57 @@ suspend fun download(url: String, saveDir: String, percentage: (Int) -> Unit)
 
     val bufferSize = 4096
 
-        val connection = URL(url).openConnection() as HttpURLConnection
+    val connection = URL(url).openConnection() as HttpURLConnection
 
-        val inputStream = connection.inputStream
+    val inputStream = connection.inputStream
 
-        val responseCode = connection.responseCode
+    val responseCode = connection.responseCode
 
-        if (responseCode == HttpURLConnection.HTTP_OK) {
+    if (responseCode == HttpURLConnection.HTTP_OK) {
 //            val disposition = connection.getHeaderField("Content-Disposition")
 //            val contentType = connection.contentType
-            val contentLength = connection.contentLength
+        val contentLength = connection.contentLength
 
-            val fileName = url.substring(
-                url.lastIndexOf("/") + 1,
-                url.length
+        val fileName = url.substring(
+            url.lastIndexOf("/") + 1,
+            url.length
+        )
+
+        val saveFilePath = "$saveDir${File.separator}$fileName"
+
+        Log.d(
+            "DOWNLOAD",
+            "saveFilePath $saveFilePath"
+        )
+
+        val outputStream = FileOutputStream(saveFilePath)
+
+        val buffer = ByteArray(bufferSize)
+
+        var bytesRead: Int
+        var downloadPercentage: Int
+
+        while ((inputStream.read(buffer).also { bytesRead = it }) != -1 && isActive) {
+            outputStream.write(
+                buffer,
+                0,
+                bytesRead
             )
-
-            val saveFilePath = "$saveDir${File.separator}$fileName"
-
-            Log.d("DOWNLOAD", "saveFilePath $saveFilePath")
-
-            val outputStream = FileOutputStream(saveFilePath)
-
-            val buffer = ByteArray(bufferSize)
-
-            var bytesRead: Int
-            var downloadPercentage: Int
-
-            while ((inputStream.read(buffer).also { bytesRead = it }) != -1 && isActive) {
-                outputStream.write(buffer, 0, bytesRead)
-                downloadPercentage = ((outputStream.channel.size()
-                    .toDouble() / contentLength.toDouble()) * 100).toInt()
-                percentage(downloadPercentage)
-            }
-
-            connection.disconnect()
-            inputStream.close()
-            outputStream.close()
+            downloadPercentage = ((outputStream.channel.size()
+                .toDouble() / contentLength.toDouble()) * 100).toInt()
+            percentage(downloadPercentage)
         }
+
+        connection.disconnect()
+        inputStream.close()
+        outputStream.close()
+    }
 }
 
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewDownloadScreen() {
     TestComposeTheme {
