@@ -185,6 +185,11 @@
             android:label="@string/title_activity_notification"
             android:theme="@style/Theme.TestCompose" />
         <activity
+            android:name=".ImageCompressionActivity"
+            android:exported="true"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".MasterActivity"
             android:exported="true"
             android:screenOrientation="fullSensor"
