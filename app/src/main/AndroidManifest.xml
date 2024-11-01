@@ -25,6 +25,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".SnackBarInAnyPlaceActivity"
+            android:exported="false"
+            android:label="@string/title_activity_form_keyboard_management"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".FormKeyboardManagementActivity"
             android:exported="false"
             android:label="@string/title_activity_form_keyboard_management"
