@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name=".MyApp"
+        android:name=".DeepLinkApplication"
         android:allowBackup="true"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +23,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestCompose"
         android:usesCleartextTraffic="true"
-        tools:targetApi="tiramisu">
+        tools:targetApi="tiramisu"
+        >
+        <activity
+            android:name=".DeepLinkActivity"
+            android:exported="true"
+            android:label="@string/title_activity_deep_link"
+            android:theme="@style/Theme.TestCompose">
+            <intent-filter android:autoVerify="true">
+                <data android:scheme="tc" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="pl-coding.com" />
+                <data android:host="www.pl-coding.com" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SnackBarInAnyPlaceActivity"
             android:exported="false"
