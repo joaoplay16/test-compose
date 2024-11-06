@@ -7,7 +7,7 @@ import coil.ImageLoaderFactory
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 
-class MyApp: Application(), ImageLoaderFactory {
+open class MyApp: Application(), ImageLoaderFactory {
 
     override fun newImageLoader(): ImageLoader {
         return ImageLoader(this)
