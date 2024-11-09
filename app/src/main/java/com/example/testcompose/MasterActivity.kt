@@ -8,14 +8,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.TextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.theme.TestComposeTheme
 
 class MasterActivity : ComponentActivity() {
@@ -26,6 +35,25 @@ class MasterActivity : ComponentActivity() {
         setContent {
             TestComposeTheme(darkTheme = true) {
                 Surface(color = MaterialTheme.colorScheme.background) {
+                    var activityList by remember {
+                        mutableStateOf(
+                            getActivityListFromManifest()
+                        )
+                    }
+
+                    var searchText by remember { mutableStateOf("") }
+
+                    LaunchedEffect(key1 = searchText) {
+                        if (searchText.isEmpty()) {
+                            activityList = getActivityListFromManifest()
+                        } else {
+                            val regex = searchText.toRegex(RegexOption.IGNORE_CASE)
+
+                            activityList = getActivityListFromManifest().filter {
+                                regex.containsMatchIn(it.name)
+                            }
+                        }
+                    }
 
                     Column(
                         modifier = Modifier
@@ -33,9 +61,18 @@ class MasterActivity : ComponentActivity() {
                             .verticalScroll(rememberScrollState()),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        getActivityListFromManifest().sortedBy { it.name.substringAfterLast(".")
+                        TextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp),
+                            value = searchText,
+                            onValueChange = { text ->
+                                searchText = text
+                            }
+                        )
+                        activityList.sortedBy {
+                            it.name.substringAfterLast(".")
                         }.map {
-
                             Button(onClick = {
                                 startActivity(
                                     Intent().apply {
