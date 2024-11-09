@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.TextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
@@ -34,56 +35,62 @@ class MasterActivity : ComponentActivity() {
 
         setContent {
             TestComposeTheme(darkTheme = true) {
+                var activityList by remember {
+                    mutableStateOf(
+                        getActivityListFromManifest()
+                    )
+                }
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    var activityList by remember {
-                        mutableStateOf(
-                            getActivityListFromManifest()
-                        )
-                    }
+                    Scaffold(
+                        topBar = {
+                            var searchText by remember { mutableStateOf("") }
 
-                    var searchText by remember { mutableStateOf("") }
+                            LaunchedEffect(key1 = searchText) {
+                                if (searchText.isEmpty()) {
+                                    activityList = getActivityListFromManifest()
+                                } else {
+                                    val regex = searchText.toRegex(RegexOption.IGNORE_CASE)
 
-                    LaunchedEffect(key1 = searchText) {
-                        if (searchText.isEmpty()) {
-                            activityList = getActivityListFromManifest()
-                        } else {
-                            val regex = searchText.toRegex(RegexOption.IGNORE_CASE)
-
-                            activityList = getActivityListFromManifest().filter {
-                                regex.containsMatchIn(it.name)
-                            }
-                        }
-                    }
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        TextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp),
-                            value = searchText,
-                            onValueChange = { text ->
-                                searchText = text
-                            }
-                        )
-                        activityList.sortedBy {
-                            it.name.substringAfterLast(".")
-                        }.map {
-                            Button(onClick = {
-                                startActivity(
-                                    Intent().apply {
-                                        setClassName(
-                                            this@MasterActivity,
-                                            it.name
-                                        )
+                                    activityList = getActivityListFromManifest().filter {
+                                        regex.containsMatchIn(it.name)
                                     }
-                                )
-                            }) {
-                                Text(it.name.substringAfterLast("."))
+                                }
+                            }
+
+                            TextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 10.dp),
+                                value = searchText,
+                                onValueChange = { text ->
+                                    searchText = text
+                                }
+                            )
+                        }
+                    ) { padding ->
+                        Column(
+                            modifier = Modifier
+                                .padding(padding)
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState()),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+
+                            activityList.sortedBy {
+                                it.name.substringAfterLast(".")
+                            }.map {
+                                Button(onClick = {
+                                    startActivity(
+                                        Intent().apply {
+                                            setClassName(
+                                                this@MasterActivity,
+                                                it.name
+                                            )
+                                        }
+                                    )
+                                }) {
+                                    Text(it.name.substringAfterLast("."))
+                                }
                             }
                         }
                     }
