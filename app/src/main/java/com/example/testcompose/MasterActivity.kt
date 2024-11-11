@@ -82,6 +82,9 @@ class MasterActivity : ComponentActivity() {
                         onValueChange = { text ->
                             searchText = text
                         },
+                        placeholder = {
+                            Text(text = "Search for an activity")
+                        }
                     )
                 }
             ) { padding ->
