@@ -12,12 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.TextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +26,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.theme.TestComposeTheme
 
@@ -35,68 +38,86 @@ class MasterActivity : ComponentActivity() {
 
         setContent {
             TestComposeTheme(darkTheme = true) {
-                var activityList by remember {
-                    mutableStateOf(
-                        getActivityListFromManifest()
+                MainContent()
+            }
+        }
+    }
+
+    @Composable
+    fun MainContent() {
+        val isInPreview = LocalInspectionMode.current
+
+        val activityList = remember {
+            if (isInPreview) emptyList() else getActivityListFromManifest()
+        }
+
+        var mutableActivityList by remember {
+            mutableStateOf(
+                activityList
+            )
+        }
+
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Scaffold(
+                topBar = {
+                    var searchText by remember { mutableStateOf("") }
+
+                    LaunchedEffect(key1 = searchText) {
+                        if (searchText.isEmpty()) {
+                            mutableActivityList = activityList
+                        } else {
+                            val regex = searchText.toRegex(RegexOption.IGNORE_CASE)
+
+                            mutableActivityList = activityList.filter {
+                                regex.containsMatchIn(it.name)
+                            }
+                        }
+                    }
+
+                    TextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp),
+                        value = searchText,
+                        onValueChange = { text ->
+                            searchText = text
+                        },
                     )
                 }
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    Scaffold(
-                        topBar = {
-                            var searchText by remember { mutableStateOf("") }
+            ) { padding ->
+                Column(
+                    modifier = Modifier
+                        .padding(padding)
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
-                            LaunchedEffect(key1 = searchText) {
-                                if (searchText.isEmpty()) {
-                                    activityList = getActivityListFromManifest()
-                                } else {
-                                    val regex = searchText.toRegex(RegexOption.IGNORE_CASE)
-
-                                    activityList = getActivityListFromManifest().filter {
-                                        regex.containsMatchIn(it.name)
-                                    }
-                                }
-                            }
-
-                            TextField(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 10.dp),
-                                value = searchText,
-                                onValueChange = { text ->
-                                    searchText = text
+                    mutableActivityList.sortedBy {
+                        it.name.substringAfterLast(".")
+                    }.map {
+                        Button(onClick = {
+                            startActivity(
+                                Intent().apply {
+                                    setClassName(
+                                        this@MasterActivity,
+                                        it.name
+                                    )
                                 }
                             )
-                        }
-                    ) { padding ->
-                        Column(
-                            modifier = Modifier
-                                .padding(padding)
-                                .fillMaxSize()
-                                .verticalScroll(rememberScrollState()),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-
-                            activityList.sortedBy {
-                                it.name.substringAfterLast(".")
-                            }.map {
-                                Button(onClick = {
-                                    startActivity(
-                                        Intent().apply {
-                                            setClassName(
-                                                this@MasterActivity,
-                                                it.name
-                                            )
-                                        }
-                                    )
-                                }) {
-                                    Text(it.name.substringAfterLast("."))
-                                }
-                            }
+                        }) {
+                            Text(it.name.substringAfterLast("."))
                         }
                     }
                 }
             }
         }
+    }
+
+    @Preview
+    @Composable
+    fun MainContentPreview() {
+        MainContent()
     }
 
     private fun getActivityListFromManifest(): List<ActivityInfo> {
