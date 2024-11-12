@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,7 +38,7 @@ class MasterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            TestComposeTheme(darkTheme = true) {
+            TestComposeTheme(darkTheme = isSystemInDarkTheme()) {
                 MainContent()
             }
         }
