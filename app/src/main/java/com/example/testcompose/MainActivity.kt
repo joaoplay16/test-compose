@@ -24,6 +24,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -42,6 +43,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale.Companion.FillHeight
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -260,12 +263,21 @@ fun AsyncImagePreview() {
                         .fillMaxWidth()
                         .aspectRatio(16f / 9),
                     model = "https://jooinn.com/images/dog-67.jpg",
+                    contentScale = FillHeight,
                     contentDescription = null,
                     error = {
-                        Image(
-                            painter = painterResource(id = R.drawable.baseline_baby_changing_station_24),
-                            contentDescription
-                        )
+                        if (LocalInspectionMode.current) {
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = null,
+                                tint = Color.Red
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(id = R.drawable.logo),
+                                contentDescription
+                            )
+                        }
                     }
                 )
                 Text(text = "Image")
@@ -273,3 +285,4 @@ fun AsyncImagePreview() {
         }
     }
 }
+
