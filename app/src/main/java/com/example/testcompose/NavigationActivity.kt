@@ -47,8 +47,15 @@ fun DefaultNavHost() {
         navController = navController,
         startDestination = "auth",
     ){
-        composable("about"){
-            Text(text = "About")
+        composable("about") {
+            Column {
+                Text(text = "About")
+                Button(onClick = {
+                    navController.navigateUp()
+                }) {
+                    Text(text = "Back")
+                }
+            }
         }
         navigation(
             startDestination = "login",
