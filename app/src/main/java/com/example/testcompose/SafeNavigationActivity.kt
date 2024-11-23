@@ -36,10 +36,12 @@ class SafeNavigationActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Button(onClick = {
-                                navController.navigate(ScreenB(
-                                    name = "Joao",
-                                    age = 25
-                                ))
+                                navController.navigate(
+                                    ScreenB(
+                                        name = "Joao",
+                                        age = 25
+                                    )
+                                )
                             }) {
                                 Text(text = "Go to screen B")
                             }
@@ -53,6 +55,11 @@ class SafeNavigationActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(text = "${args.name}, ${args.age} years old")
+                            Button(onClick = {
+                                navController.navigateUp()
+                            }) {
+                                Text(text = "Go back")
+                            }
                         }
                     }
                 }
