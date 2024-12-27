@@ -25,6 +25,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".FlowActivity"
+            android:exported="false"
+            android:label="@string/title_activity_flow"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".Material3ListActivity"
             android:exported="false"
             android:label="@string/title_activity_material3_list"

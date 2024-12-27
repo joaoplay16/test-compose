@@ -54,4 +54,5 @@
     <string name="title_activity_form_keyboard_management">FormKeyboardManagementActivity</string>
     <string name="title_activity_deep_link">DeepLinkActivity</string>
     <string name="title_activity_material3_list">Material3ListActivity</string>
+    <string name="title_activity_flow">FlowActivity</string>
 </resources>
