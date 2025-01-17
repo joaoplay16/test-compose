@@ -11,6 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.testcompose.viewmodel.ScreenAViewModel
 import kotlinx.coroutines.launch
 
 @Composable

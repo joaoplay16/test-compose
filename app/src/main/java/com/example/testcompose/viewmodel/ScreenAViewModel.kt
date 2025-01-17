@@ -1,4 +1,4 @@
-package com.example.testcompose.screen
+package com.example.testcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
