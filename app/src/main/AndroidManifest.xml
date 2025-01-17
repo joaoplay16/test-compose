@@ -25,6 +25,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".DrawCanvasActivity"
+            android:exported="false"
+            android:label="@string/title_activity_draw_canvas"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".FabExplodeActivity"
             android:exported="false"
             android:label="@string/title_activity_fab_explode"
