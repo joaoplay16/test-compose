@@ -81,7 +81,7 @@ dependencies {
     implementation("androidx.biometric:biometric:1.1.0")
 
     implementation "com.google.accompanist:accompanist-permissions:0.37.3"
-    implementation "androidx.compose.foundation:foundation:1.7.5"
+    implementation "androidx.compose.foundation:foundation:1.9.5"
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
     implementation 'androidx.activity:activity-ktx:1.9.3'
     implementation platform('androidx.compose:compose-bom:2024.11.00')
