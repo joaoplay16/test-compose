@@ -99,7 +99,7 @@ dependencies {
     implementation "androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0"
 
     implementation "androidx.navigation:navigation-compose:$nav_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
