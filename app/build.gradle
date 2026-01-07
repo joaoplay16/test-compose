@@ -62,8 +62,8 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.12.1'
     implementation "androidx.compose.material:material-icons-extended:1.7.8"
 // build.gradle
-    implementation("io.coil-kt.coil3:coil-compose:3.0.2")
-    implementation("io.coil-kt.coil3:coil-gif:3.0.2")
+    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+    implementation("io.coil-kt.coil3:coil-gif:3.3.0")
     implementation "androidx.constraintlayout:constraintlayout-compose:1.1.1"
     implementation 'com.google.android.gms:play-services-ads:23.5.0'
 
