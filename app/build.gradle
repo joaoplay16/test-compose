@@ -65,7 +65,7 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.3.0")
     implementation("io.coil-kt.coil3:coil-gif:3.3.0")
     implementation "androidx.constraintlayout:constraintlayout-compose:1.1.1"
-    implementation 'com.google.android.gms:play-services-ads:23.5.0'
+    implementation 'com.google.android.gms:play-services-ads:24.9.0'
 
     // Camera dependencies
     def camerax_version = "1.5.2"
