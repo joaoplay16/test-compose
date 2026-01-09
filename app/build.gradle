@@ -93,7 +93,7 @@ dependencies {
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:3.0.0")
 
     implementation "androidx.compose.material3.adaptive:adaptive-navigation:1.2.0"
     implementation "androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0"
