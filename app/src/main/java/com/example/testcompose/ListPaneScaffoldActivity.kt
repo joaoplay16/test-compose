@@ -29,10 +29,12 @@ import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneSca
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.testcompose.ui.theme.TestComposeTheme
+import kotlinx.coroutines.launch
 
 class ListPaneScaffoldActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +56,7 @@ class ListPaneScaffoldActivity : ComponentActivity() {
 @Composable
 fun ListDetailLayout(modifier: Modifier = Modifier) {
     val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
+    val coroutineScope = rememberCoroutineScope()
     NavigableListDetailPaneScaffold(
         modifier = modifier,
         navigator = navigator,
@@ -69,10 +72,12 @@ fun ListDetailLayout(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .fillParentMaxWidth()
                             .clickable {
-                                navigator.navigateTo(
-                                    pane = ListDetailPaneScaffoldRole.Detail,
-                                    content = "Item $it"
-                                )
+                                coroutineScope.launch {
+                                    navigator.navigateTo(
+                                        pane = ListDetailPaneScaffoldRole.Detail,
+                                        contentKey = "Item $it"
+                                    )
+                                }
                             }
                             .padding(16.dp)
                     )
@@ -80,7 +85,7 @@ fun ListDetailLayout(modifier: Modifier = Modifier) {
             }
         },
         detailPane = {
-            val content = navigator.currentDestination?.content?.toString() ?: "Select an item"
+            val content = navigator.currentDestination?.contentKey?.toString() ?: "Select an item"
             AnimatedPane {
                 Column(
                     modifier = Modifier
@@ -93,10 +98,12 @@ fun ListDetailLayout(modifier: Modifier = Modifier) {
                     Row {
                         AssistChip(
                             onClick = {
-                                navigator.navigateTo(
-                                    pane = ListDetailPaneScaffoldRole.Extra,
-                                    content = "Option 1"
-                                )
+                                coroutineScope.launch {
+                                    navigator.navigateTo(
+                                        pane = ListDetailPaneScaffoldRole.Extra,
+                                        contentKey = "Option 1"
+                                    )
+                                }
                             },
                             label = {
                                 Text(text = "Option 1")
@@ -105,10 +112,13 @@ fun ListDetailLayout(modifier: Modifier = Modifier) {
                         Spacer(modifier = Modifier.width(16.dp))
                         AssistChip(
                             onClick = {
-                                navigator.navigateTo(
-                                    pane = ListDetailPaneScaffoldRole.Extra,
-                                    content = "Option 2"
-                                )
+                                coroutineScope.launch {
+
+                                    navigator.navigateTo(
+                                        pane = ListDetailPaneScaffoldRole.Extra,
+                                        contentKey = "Option 2"
+                                    )
+                                }
                             },
                             label = {
                                 Text(text = "Option 2")
@@ -119,7 +129,7 @@ fun ListDetailLayout(modifier: Modifier = Modifier) {
             }
         },
         extraPane = {
-            val content = navigator.currentDestination?.content?.toString() ?: "Select an option"
+            val content = navigator.currentDestination?.contentKey?.toString() ?: "Select an option"
             AnimatedPane {
                 Box(
                     modifier = Modifier
