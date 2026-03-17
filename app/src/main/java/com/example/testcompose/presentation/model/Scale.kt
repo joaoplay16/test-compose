@@ -35,7 +35,7 @@ fun Scale(
     }
 
     var angle by remember {
-        mutableStateOf(0f)
+        mutableFloatStateOf(0f)
     }
 
     Canvas(modifier = modifier) {
