@@ -66,6 +66,8 @@ fun Scale(
 
         //Draw lines
         for (i in minWeight..maxWeight) {
+
+            //Math.PI / 180: É aproximadamente 0,0174. Este é o valor de 1 grau em radianos.
             val angleInRad = (i - initialWeight + angle - 90) * (Math.PI / 180f).toFloat()
 
             val lineType = when {
