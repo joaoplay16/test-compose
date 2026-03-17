@@ -58,4 +58,5 @@
     <string name="title_activity_fab_explode">FabExplodeActivity</string>
     <string name="title_activity_draw_canvas">DrawCanvasActivity</string>
     <string name="title_activity_connectivity">ConnectivityActivity</string>
+    <string name="title_activity_weight_picker">WeightPickerActivity</string>
 </resources>
