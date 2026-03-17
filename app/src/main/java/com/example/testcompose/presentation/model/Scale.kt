@@ -130,3 +130,21 @@ fun Scale(
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable()
+private fun PreviewScale() {
+    TestComposeTheme {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Scale(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
+            ) {
+
+            }
+        }
+    }
+}
