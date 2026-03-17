@@ -96,6 +96,31 @@ fun Scale(
                 y = outerRadius * sin(angleInRad) + circleCenter.y
             )
 
+            drawContext.canvas.nativeCanvas.apply {
+                if(lineType is LineType.TenStep){
+                    val textRadius = outerRadius - lineLength - 5.dp.toPx() - style.textSize.toPx()
+
+                    val x = textRadius * cos(angleInRad) + circleCenter.x
+                    val y = textRadius * sin(angleInRad) + circleCenter.y
+
+                    withRotation(
+                        degrees = angleInRad * (180 / PI.toFloat()) + 90f,
+                        x,
+                        y
+                    ){
+                        drawText(
+                            abs(i).toString(),
+                            x,
+                            y,
+                            Paint().apply {
+                                textSize = style.textSize.toPx()
+                                textAlign = Paint.Align.CENTER
+                            }
+                        )
+                    }
+                }
+            }
+
             drawLine(
                 color = lineColor,
                 start = lineStart,
