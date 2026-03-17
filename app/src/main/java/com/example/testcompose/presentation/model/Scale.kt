@@ -127,6 +127,30 @@ fun Scale(
                 end = lineEnd,
                 strokeWidth = 1.dp.toPx()
             )
+
+            val middleTop = Offset(
+                x = circleCenter.x,
+                y = circleCenter.y - innerRadius - style.scaleIndicatorLength.toPx()
+            )
+
+            val bottomLeft = Offset(
+                x = circleCenter.x - 4f,
+                y = circleCenter.y - innerRadius
+            )
+
+            val bottomRight = Offset(
+                x = circleCenter.x + 4f,
+                y = circleCenter.y - innerRadius
+            )
+
+            val indicator = Path().apply {
+                moveTo(middleTop.x, middleTop.y)
+                lineTo(bottomLeft.x, bottomLeft.y)
+                lineTo(bottomRight.x, bottomRight.y)
+                lineTo(middleTop.x, middleTop.y)
+            }
+
+            drawPath(path = indicator, color = style.scaleIndicatorColor)
         }
     }
 }
