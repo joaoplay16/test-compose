@@ -215,16 +215,25 @@ fun Scale(
 @Preview(showBackground = true)
 @Composable()
 private fun PreviewScale() {
+    var weight by remember {
+        mutableIntStateOf(value = 80)
+    }
+
     TestComposeTheme {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
         ) {
+            Text(weight.toString(), fontSize = 36.sp)
+
             Scale(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(300.dp)
                     .align(Alignment.Center),
+                style = ScaleStyle(scaleWidth = 150.dp)
             ) {
-
+                weight = it
             }
         }
     }
