@@ -3,12 +3,16 @@ package com.example.testcompose.presentation.model
 import android.graphics.Color
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -17,13 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.graphics.withRotation
 import com.example.testcompose.screen.ScaleStyle
 import com.example.testcompose.ui.theme.TestComposeTheme
 import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -49,7 +56,44 @@ fun Scale(
         mutableFloatStateOf(0f)
     }
 
-    Canvas(modifier = modifier) {
+    var dragStartedAngle by remember {
+        mutableFloatStateOf(0f)
+    }
+
+    var oldAngle by remember {
+        mutableFloatStateOf(angle)
+    }
+
+    Canvas(
+        modifier = modifier
+            .pointerInput(true) {
+                detectDragGestures(
+                    onDragStart = { offset ->
+                        dragStartedAngle = -atan2(
+                            circleCenter.x - offset.x,
+                            circleCenter.y - offset.y
+                        ) * (180 / PI).toFloat()
+                    },
+                    onDragEnd = {
+                        oldAngle = angle
+
+                    }
+                    ) { change, _ ->
+                    val touchAngle = -atan2(
+                        circleCenter.x - change.position.x,
+                        circleCenter.y - change.position.y
+                    ) * (180 / PI).toFloat()
+
+                    val newAngle = oldAngle + (touchAngle - dragStartedAngle)
+
+                    angle = newAngle.coerceIn(
+                        minimumValue = initialWeight - maxWeight.toFloat(), // -170
+                        maximumValue = initialWeight - minWeight.toFloat() // 60
+                    )
+                    onWeightChange((initialWeight - angle).toInt())
+                }
+
+            }) {
         center = this.center
         circleCenter = Offset(center.x, scaleWidth.toPx() / 2f + radius.toPx())
 
