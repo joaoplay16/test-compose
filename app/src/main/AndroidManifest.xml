@@ -26,6 +26,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".ClockActivity"
+            android:exported="false"
+            android:label="@string/title_activity_clock"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".WeightPickerActivity"
             android:exported="false"
             android:label="@string/title_activity_weight_picker"
