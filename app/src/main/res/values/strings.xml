@@ -60,4 +60,5 @@
     <string name="title_activity_connectivity">ConnectivityActivity</string>
     <string name="title_activity_weight_picker">WeightPickerActivity</string>
     <string name="title_activity_clock">ClockActivity</string>
+    <string name="title_activity_path">PathActivity</string>
 </resources>
