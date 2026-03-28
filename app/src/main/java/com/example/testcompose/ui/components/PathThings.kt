@@ -1,5 +1,6 @@
 package com.example.testcompose.ui.components
 
+import android.graphics.Paint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -13,6 +14,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -21,6 +23,7 @@ import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlin.math.PI
@@ -142,6 +145,46 @@ fun DrawPathClipping(modifier: Modifier = Modifier) {
             )
         }
     }
+}
+
+@Composable
+fun DrawTextOnPath(modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.fillMaxSize()) {
+        val path = android.graphics.Path().apply {
+            moveTo(0f, 800f)
+            quadTo(size.width / 2f, 300f, size.width, 800f)
+        }
+        drawContext.canvas.nativeCanvas.apply {
+            drawTextOnPath(
+                "Hello World!",
+                path,
+                0f,
+                -60f,
+                Paint().apply {
+                    color = android.graphics.Color.RED
+                    textSize = 130f
+                    textAlign = Paint.Align.CENTER
+                }
+            )
+        }
+        drawPath(
+            path = path.asComposePath(),
+            color = Color.Black,
+            style = Stroke(
+                width = 3.dp.toPx(),
+                cap = StrokeCap.Round,
+                pathEffect = PathEffect.dashPathEffect(
+                    intervals = floatArrayOf(50f, 30f)
+                )
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewDrawTextOnPath() {
+    DrawTextOnPath()
 }
 
 @Preview(showBackground = true)
