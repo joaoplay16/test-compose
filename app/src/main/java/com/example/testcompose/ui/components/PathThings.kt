@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.asAndroidPath
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -118,6 +119,35 @@ fun DrawPathAnimation(modifier: Modifier = Modifier) {
             )
         }
     }
+}
+
+@Composable
+fun DrawPathClipping(modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.fillMaxSize()) {
+        val circle = Path().apply {
+            addOval(Rect(center = Offset(400f, 400f), radius = 300f))
+        }
+        drawPath(
+            path = circle,
+            color = Color.Black,
+            style = Stroke(width = 5.dp.toPx())
+        )
+        clipPath(
+            path = circle
+        ) {
+            drawRect(
+                color = Color.Red,
+                topLeft = Offset(400f, 400f),
+                size = Size(400f, 400f)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewDrawPathClipping() {
+    DrawPathClipping()
 }
 
 @Preview(showBackground = true)
