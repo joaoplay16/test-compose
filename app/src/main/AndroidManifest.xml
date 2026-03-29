@@ -26,6 +26,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".GenderPickerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_gender_picker"
+            android:theme="@style/Theme.TestCompose" />
+        <activity
             android:name=".PathActivity"
             android:exported="false"
             android:label="@string/title_activity_path"

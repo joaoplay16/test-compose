@@ -61,4 +61,5 @@
     <string name="title_activity_weight_picker">WeightPickerActivity</string>
     <string name="title_activity_clock">ClockActivity</string>
     <string name="title_activity_path">PathActivity</string>
+    <string name="title_activity_gender_picker">GenderPickerActivity</string>
 </resources>
