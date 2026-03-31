@@ -32,7 +32,7 @@
             android:theme="@style/Theme.TestCompose" />
         <activity
             android:name=".GenderPickerActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_gender_picker"
             android:theme="@style/Theme.TestCompose" />
         <activity
