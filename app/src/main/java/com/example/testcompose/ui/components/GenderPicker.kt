@@ -97,6 +97,7 @@ fun GenderPicker(
 
     Canvas(
         modifier = modifier
+            .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures {
                     val transformedMaleRect = Rect(
