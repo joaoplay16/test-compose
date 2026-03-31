@@ -15,7 +15,7 @@ class GenderPickerActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TestComposeTheme {
-
+                GenderPicker { }
             }
         }
     }
